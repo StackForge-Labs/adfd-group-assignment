@@ -1,4 +1,4 @@
-# ADFD — Lab 5 & Lab 6 (Team E)
+# ADFD — Lab 5 & Lab 6
 
 Bài tập nhóm môn Flutter. Nhóm phụ trách **Lab 5 (Architecture)** và
 **Lab 6 (REST API)**.
