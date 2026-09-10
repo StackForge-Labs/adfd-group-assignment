@@ -142,6 +142,43 @@ class _ContactListState extends State<ContactList> {
     );
   }
 
+  // CẢI TIẾN: màn hình báo lỗi thay cho spinner quay vĩnh viễn.
+  //
+  // Ba thứ người dùng cần khi có sự cố: biết là đã hỏng, biết hỏng vì sao,
+  // và có cách thử lại mà không phải tắt mở app.
+  Widget buildError(ContactProvider provider) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.cloud_off, size: 56),
+            const SizedBox(height: 16),
+            Text(
+              provider.error ?? 'Đã có lỗi xảy ra',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            FilledButton.icon(
+              onPressed: () {
+                searchController.clear();
+                provider.loadContacts();
+              },
+              icon: const Icon(Icons.refresh),
+              label: const Text('Thử lại'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // CẢI TIẾN: phân biệt "không có kết quả" với "chưa tải xong".
+  Widget buildEmpty() {
+    return const Center(child: Text('Không tìm thấy Contact nào'));
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<ContactProvider>();
@@ -168,9 +205,14 @@ class _ContactListState extends State<ContactList> {
           ),
         ),
 
+        // CẢI TIẾN: bốn nhánh thay vì hai — loading, lỗi, rỗng, có dữ liệu.
         Expanded(
           child: provider.loading
               ? const Center(child: CircularProgressIndicator())
+              : provider.error != null
+              ? buildError(provider)
+              : provider.contacts.isEmpty
+              ? buildEmpty()
               : ListView.builder(
                   itemCount: provider.contacts.length,
                   itemBuilder: (context, index) {
