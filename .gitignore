@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+
+# ── Java / Maven ─────────────────────────────────────────────
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+*.log
+
+# ── Dart / Flutter ───────────────────────────────────────────
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+**/build/
+*.iml
+
+# Android
+**/android/.gradle/
+**/android/local.properties
+**/android/key.properties
+*.jks
+*.keystore
+
+# iOS
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+
+# ── IDE ──────────────────────────────────────────────────────
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# ── Bí mật ───────────────────────────────────────────────────
+.env
