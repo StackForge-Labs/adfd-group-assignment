@@ -25,7 +25,8 @@ adfd-group-assignment/
 │   ├── tong-quan-lab-5-6.md        bức tranh lớn — ĐỌC CÁI NÀY TRƯỚC
 │   ├── luong-chay-chuong-trinh.md  bấm Run xong máy làm gì
 │   ├── cau-truc-du-an.md           cấu trúc thư mục và lý do đằng sau
-│   └── phan-cong-task.md           chia việc 4 người + kịch bản trình bày
+│   ├── phan-cong-task.md           chia việc 4 người + kịch bản trình bày
+│   └── lenh-hay-dung.md            tra cứu lệnh Flutter / Maven / Docker
 ├── adfd05_architecture/            Flutter — Lab 5, 5 flow
 └── adfd06_rest_api/
     ├── adfd06_backend/             Spring Boot 4.1.1 + MySQL, port 8082
@@ -39,6 +40,8 @@ adfd-group-assignment/
 3. `docs/cau-truc-du-an.md` — hiểu vì sao thư mục sắp xếp như vậy
 4. `docs/phan-cong-task.md` — phần việc của mình và câu hỏi phải trả lời được
 5. Mục **Cài đặt môi trường** bên dưới — rồi chạy thử
+
+Lúc code thì mở `docs/lenh-hay-dung.md` để tra lệnh.
 
 > Đề bài gốc của thầy (file PDF và source mẫu) **không nằm trong repo này**.
 > Hỏi trưởng nhóm để lấy.
