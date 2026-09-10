@@ -1,0 +1,46 @@
+# MySQL cho ADFD06.
+#
+# Dùng khi máy bạn CHƯA có MySQL nào chạy:
+#   docker compose up -d
+#
+# Nếu máy đã có sẵn MySQL ở cổng 3306, bỏ qua file này và nạp db/init.sql
+# vào MySQL sẵn có:
+#   docker exec -i <tên-container> mysql -uroot -p<mật-khẩu> < db/init.sql
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: adfd_mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 112233
+      MYSQL_DATABASE: adfddb
+    volumes:
+      # Script trong thư mục này chỉ chạy MỘT LẦN, lúc volume còn trống.
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - adfd_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p112233"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # Giao diện web xem database — tiện lúc demo để chiếu dữ liệu thật.
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: adfd_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: 112233
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  adfd_mysql_data:
