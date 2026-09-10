@@ -174,8 +174,8 @@ dấu hỏi.
 
 ## Cải tiến của nhóm
 
-Ba thay đổi so với code thầy cho. Cả ba đều **sửa lỗi thật**, không phải thêm
-tính năng cho đẹp. Xem diff cụ thể bằng `git log --oneline`.
+Bốn thay đổi so với code thầy cho. Cả bốn đều **sửa lỗi thật**, không phải
+thêm tính năng cho đẹp. Xem diff cụ thể bằng `git log --oneline`.
 
 ### 1. Lab 6 — App không còn treo spinner vĩnh viễn
 
@@ -232,6 +232,54 @@ const bool useInMemoryDataSource = false;   // → true
 App chạy y nguyên: Read, Like/Dislike, Search đều hoạt động, chỉ khác nguồn
 dữ liệu. **Không file nào khác phải sửa** — không Repository, không Provider,
 không UI. Đó chính là Dependency Inversion, nhìn thấy được.
+
+### 4. Backend — Thực thi đúng ràng buộc schema trong đề bài
+
+**Lỗi gốc:** entity `Contact` không có `@Column` nào, chỉ khai báo trần
+`private String name;`. Kết hợp với `spring.jpa.hibernate.ddl-auto=update`,
+Hibernate lấy mặc định của nó — `varchar(255)`, cho phép null — và **ghi đè lên
+schema** đã tạo từ script DDL.
+
+Đo được bằng request thật, trước khi sửa:
+
+```
+POST /api/contacts  {}
+→ 200 OK  {"id":10,"name":null,"email":null,"phone":null,"address":null}
+
+POST /api/contacts  {"name":"Test","phone":"<200 ký tự>"}
+→ 200 OK, lưu đủ 200 ký tự
+```
+
+Cả hai vi phạm DDL của đề bài:
+
+```sql
+name    varchar(100) not null
+email   varchar(150)
+phone   varchar(20)  not null
+address varchar(255)
+```
+
+**Đã sửa:** khai báo ràng buộc trong entity cho khớp DDL.
+
+```java
+@Column(length = 100, nullable = false)
+private String name;
+
+@Column(length = 20, nullable = false)
+private String phone;
+```
+
+Sau khi sửa, cùng hai request đó bị từ chối, còn request hợp lệ vẫn chạy bình
+thường. Schema cũng không bị Hibernate ghi đè nữa vì entity đã khớp bảng.
+
+**Lưu ý:** đây **không** phải hậu quả của việc đổi sang MySQL. Entity và
+`ddl-auto=update` giữ nguyên từ code gốc, và hành vi này của Hibernate không phụ
+thuộc hệ quản trị cơ sở dữ liệu.
+
+**Còn thiếu gì:** request sai hiện trả về **HTTP 500**, trong khi đúng ra dữ liệu
+đầu vào sai phải là **400 Bad Request**. Muốn đúng chuẩn REST thì cần thêm
+`spring-boot-starter-validation`, gắn `@NotBlank` / `@Size` vào một DTO và bắt
+`MethodArgumentNotValidException`. Chưa làm vì nằm ngoài phạm vi đề bài.
 
 ---
 
