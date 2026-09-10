@@ -1,6 +1,15 @@
 # macOS
 .DS_Store
 
+# ── Node / Husky ─────────────────────────────────────────────
+# package.json và package-lock.json thì VẪN COMMIT — bạn cùng nhóm cần chúng
+# để chạy `npm install` và nhận được git hook.
+node_modules/
+
+# .husky/_/ là thư mục husky tự sinh ra. Bản thân husky có đặt một .gitignore
+# bên trong đó, nhưng khai báo ở đây để không phụ thuộc vào file đó.
+.husky/_/
+
 # ── Java / Maven ─────────────────────────────────────────────
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -28,11 +37,13 @@ build/
 **/ios/.symlinks/
 **/ios/Flutter/ephemeral/
 
-# ── IDE ──────────────────────────────────────────────────────
+# ── IDE & công cụ ────────────────────────────────────────────
 .idea/
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+.claude/
 
 # ── Bí mật ───────────────────────────────────────────────────
 .env
+.env.local
