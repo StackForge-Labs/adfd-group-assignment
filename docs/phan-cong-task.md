@@ -1,4 +1,4 @@
-# Phân công task — Lab 5 & Lab 6 (Team E, 4 người)
+# Phân công task — Lab 5 & Lab 6 (Team E)
 
 Nhóm 4 người, mỗi lab 2 người, **mỗi người trình bày một phần riêng** (không
 phải hai người nói chung một phần).
@@ -11,10 +11,10 @@ phải hai người nói chung một phần).
 
 | Phần | Ai làm | Nội dung | Cải tiến | Độ khó |
 |---|---|---|---|:--:|
-| **5A** | _______ | Flow 1-3: hợp đồng, Repository, mapping | — | ●●●○ |
-| **5B** | _______ | Flow 4-5: GetIt, Data Source, **cú lật một dòng** | 3 | ●●●● |
-| **6A** | _______ | Backend + Flow 1-2: REST, JSON → Model | 4 | ●●○○ |
-| **6B** | _______ | Flow 3-4: Provider, CRUD, UI + **chạy demo** | 1, 2, 5 | ●●●○ |
+| **5A** | **Mai Trung Hậu** | Flow 1-3: hợp đồng, Repository, mapping | — | ●●●○ |
+| **5B** | **Phạm Hoàng Tuấn** *(Leader)* | Flow 4-5: GetIt, Data Source, **cú lật một dòng** | 3 | ●●●● |
+| **6A** | **Lê Minh Trí** | Backend + Flow 1-2: REST, JSON → Model | 4 | ●●○○ |
+| **6B** | **Lâm Hoàng An** | Flow 3-4: Provider, CRUD, UI + **chạy demo** | 1, 2, 5 | ●●●○ |
 
 ### Vì sao chia như vậy
 
@@ -72,7 +72,7 @@ Lab 5, gấp 4,4 lần. Và 6B gánh toàn bộ rủi ro demo.
 
 **Câu chuyển sang 5B:**
 > *"Đến đây chúng ta có 4 tầng tách bạch. Nhưng ai là người nối chúng lại với
-> nhau? Mời bạn [tên]."*
+> nhau? Mời bạn **Tuấn**."*
 
 ---
 
@@ -123,6 +123,10 @@ Provider, không UI.
 > **Cho câu 2:** `LazySingleton` tạo **một lần duy nhất**, lần đầu có người hỏi
 > tới, rồi dùng lại mãi. `Factory` tạo **mới mỗi lần** được hỏi.
 
+**Câu chuyển sang Lab 6:**
+> *"Kiến trúc này nhóm em không chỉ dùng cho Lab 5. Lab 6 gọi API thật từ
+> server, và dùng lại đúng khung vừa rồi. Mời bạn **Trí**."*
+
 ---
 
 ## 6A · "Đường ống dữ liệu" — Backend + Flow 1, 2 + cải tiến 4
@@ -142,7 +146,7 @@ Provider, không UI.
 
 **Mở đầu Lab 6 bằng một câu bắc cầu (~30 giây):**
 > *"Kiến trúc các bạn vừa nghe ở Lab 5, nhóm em áp dụng nguyên vào Lab 6. Chi
-> tiết bạn [6B] sẽ nói ở phần sau. Phần em là dữ liệu đi từ database lên tới
+> tiết bạn **An** sẽ nói ở phần sau. Phần em là dữ liệu đi từ database lên tới
 > Model."*
 
 **Cải tiến 4 là điểm ăn tiền của phần này:**
@@ -172,7 +176,7 @@ Nguyên nhân: entity `Contact` thiếu `@Column`, cộng với
 
 **Câu chuyển sang 6B:**
 > *"Dữ liệu đã về tới Model. Giờ làm sao đưa nó lên màn hình và cho người dùng
-> thao tác? Mời bạn [tên]."*
+> thao tác? Mời bạn **An**."*
 
 ---
 
@@ -241,12 +245,12 @@ bằng chuẩn bị.
 
 **Cả nhóm:**
 - [ ] Ai cũng đọc `docs/tong-quan-lab-5-6.md` trước, rồi mới đọc phần của mình
-- [ ] Cặp Lab 6 đọc thêm `docs/cau-truc-du-an.md` — vì thầy hỏi ai đang đứng
+- [ ] Trí và An đọc thêm `docs/cau-truc-du-an.md` — vì thầy hỏi ai đang đứng
       trên bục, không hỏi người ngồi dưới
 - [ ] Tổng duyệt một lần có **hỏi vặn chéo**: mỗi người trả lời 3 câu trong
       phần của mình ở trên. Ai lắp bắp là biết chỗ nào chưa hiểu, còn kịp sửa.
 
-**Riêng 6B — quan trọng nhất:**
+**Riêng An (6B) — quan trọng nhất:**
 - [ ] Tự dựng môi trường từ đầu **trên máy của chính mình**, không phải chỉ xem
       người khác dựng (làm theo mục *Cài đặt môi trường* trong `README.md`)
 - [ ] Quay sẵn **video demo 2-3 phút** làm phương án dự phòng
@@ -267,3 +271,69 @@ Cắt từ dưới lên, giữ lại phần trên cùng:
 | Giữ nếu còn thời gian | Cải tiến 1 — tắt backend, màn báo lỗi |
 | Cắt được | Flow 2 của Lab 6 (JSON Preview) |
 | Cắt được | Cải tiến 2 và 4 — nói gọn một câu là đủ |
+
+---
+
+## Slide thuyết trình
+
+Slide là **sản phẩm chung của cả nhóm**, nhưng có người chịu trách nhiệm chính
+để tránh cảnh "ai cũng làm một tí rồi không ai chốt".
+
+| Vai trò | Ai | Việc cụ thể |
+|---|---|---|
+| **Làm chính** | **Mai Trung Hậu** · **Lâm Hoàng An** | Dựng bố cục, viết nội dung, làm hình và sơ đồ |
+| **Góp ý & duyệt** | **Phạm Hoàng Tuấn** · **Lê Minh Trí** | Đọc bản nháp, chỉ ra chỗ sai/thiếu/khó hiểu, chốt bản cuối |
+
+Hai người làm chính dựng bản nháp trước, hai người còn lại góp ý theo vòng, lặp
+tới khi cả nhóm đồng ý. **Người trình bày phần nào phải duyệt slide phần đó** —
+không ai đứng nói trên slide mình chưa từng đọc.
+
+### Công cụ dự kiến
+
+**Claude · Canva · NotebookLM · Gemini** — hoặc công cụ khác nếu thấy hợp hơn.
+
+Gợi ý phân vai công cụ:
+
+| Công cụ | Hợp để làm gì |
+|---|---|
+| **Claude** | Viết nội dung từng slide, sinh sơ đồ kiến trúc, rút gọn phần giải thích dài |
+| **Canva** | Dựng hình, thống nhất màu và bố cục |
+| **NotebookLM** | Nạp 4 file trong `docs/` vào rồi hỏi đáp — tiện cho người muốn nắm nhanh phần của mình |
+| **Gemini** | Đối chiếu, tìm góc nhìn khác cho phần giải thích khó |
+
+### Nguyên tắc nội dung slide
+
+- **Sơ đồ thắng chữ.** Chuỗi phụ thuộc, luồng dữ liệu, `HTTP → JSON → Model` —
+  vẽ ra thay vì viết thành đoạn văn.
+- **Mỗi slide một ý.** Slide nhồi 5 gạch đầu dòng là không ai đọc kịp.
+- **Code trên slide phải ngắn.** Chỉ chiếu đoạn thật sự đang nói tới, tối đa
+  khoảng 10 dòng. Muốn xem đầy đủ thì mở editor.
+- **Nguồn nội dung lấy từ `docs/`** — bốn file đó đã có sẵn sơ đồ, bảng so sánh
+  và số liệu. Đừng viết lại từ đầu, và đừng để slide nói khác tài liệu.
+- Bốn phần trình bày phải **dùng chung một bộ màu và một mẫu slide**, nếu không
+  sẽ lộ ra là bốn người làm rời rạc.
+
+### Mốc thời gian gợi ý
+
+| Việc | Ai |
+|---|---|
+| 1. Chốt dàn ý slide cho cả 4 phần | Cả nhóm |
+| 2. Dựng bản nháp | Hậu · An |
+| 3. Vòng góp ý thứ nhất | Tuấn · Trí |
+| 4. Chỉnh sửa | Hậu · An |
+| 5. Tổng duyệt có **hỏi vặn chéo** | Cả nhóm |
+| 6. Chốt bản cuối + xuất PDF dự phòng | Hậu · An |
+
+> **Bước 6 đừng bỏ:** luôn xuất một bản PDF để trong USB hoặc gửi lên Drive.
+> Máy chiếu ở trường hay giở chứng với file lạ, và Canva thì cần mạng.
+
+### Một lưu ý về khối lượng công việc
+
+Nhìn tổng thể, **An đang gánh nặng nhất**: phần 6B là phần nhiều code Flutter
+nhất, kiêm luôn chạy demo, cộng thêm làm slide chính. Trong khi **Trí** giữ phần
+6A nhẹ nhất và chỉ góp ý slide.
+
+Nếu tới sát ngày thấy An quá tải, cân nhắc chuyển bớt sang Trí — hợp lý nhất là
+để Trí **dựng môi trường Lab 6 cùng An** và làm người chạy demo dự phòng. Hai
+người cùng dựng được môi trường thì rủi ro demo giảm hẳn, vì hỏng còn có người
+thứ hai gỡ.
