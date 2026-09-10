@@ -21,10 +21,10 @@ Bài tập nhóm môn Flutter. Nhóm phụ trách **Lab 5 (Architecture)** và
 adfd-group-assignment/
 ├── docker-compose.yml              MySQL 8 + phpMyAdmin (cho máy chưa có MySQL)
 ├── db/init.sql                     Schema + 5 dòng dữ liệu mẫu
-├── lab-5/adfd05_architecture/      Flutter — 5 flow
-└── lab-6/
-    ├── adfd06_backend/             Spring Boot 4.1.1 + MySQL, port 8082
-    └── adfd06_frontend/            Flutter — 4 flow
+├── adfd05_architecture/           Flutter — 5 flow
+└── adfd06_rest_api/
+    ├── adfd06_backend/            Spring Boot 4.1.1 + MySQL, port 8082
+    └── adfd06_frontend/           Flutter — 4 flow
 ```
 
 Đề bài gốc (PDF + source thầy cho) nằm ở repo học Flutter:
@@ -48,7 +48,7 @@ adfd-group-assignment/
 ## Chạy Lab 5 (dễ, không cần backend)
 
 ```bash
-cd lab-5/adfd05_architecture
+cd adfd05_architecture
 flutter pub get
 flutter run -d emulator-5554
 ```
@@ -101,7 +101,7 @@ Phải ra **5**.
 ### Bước 2 — Backend
 
 ```bash
-cd lab-6/adfd06_backend
+cd adfd06_rest_api/adfd06_backend
 mvn clean package -DskipTests
 java -jar target/adfd06_rest_api-0.0.1-SNAPSHOT.jar
 ```
@@ -123,7 +123,7 @@ curl http://localhost:8082/api/contacts
 ### Bước 3 — Flutter
 
 ```bash
-cd lab-6/adfd06_frontend
+cd adfd06_rest_api/adfd06_frontend
 flutter pub get
 flutter run -d emulator-5554
 ```
