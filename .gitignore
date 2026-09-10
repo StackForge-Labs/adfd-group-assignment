@@ -42,7 +42,12 @@ build/
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
-.claude/
+
+# Claude — commit CLAUDE.md và settings.json để cả nhóm dùng chung.
+# Bỏ qua thiết lập riêng của từng máy, và bỏ qua skills vì đó là thói quen
+# làm việc cá nhân chứ không phải kiến thức về project này.
+.claude/settings.local.json
+.claude/skills/
 
 # ── Bí mật ───────────────────────────────────────────────────
 .env
