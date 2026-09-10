@@ -134,3 +134,13 @@ ContactModel  →  toJson()  →  Map  →  chuỗi JSON  →  gửi lên server
 Flow 2 nhìn có vẻ thừa nhưng đừng bỏ qua khi thuyết trình — nó tồn tại chỉ để
 làm cho khúc `Model → JSON` **hiện lên màn hình được**, tức là biến một khái
 niệm trừu tượng thành thứ nhìn thấy.
+
+---
+
+## 4. Đọc tiếp
+
+| File | Nội dung |
+|---|---|
+| `docs/luong-chay-chuong-trinh.md` | Bấm Run xong máy làm gì, dữ liệu đi đường nào |
+| `docs/cau-truc-du-an.md` | Cấu trúc thư mục và lý do đằng sau |
+| `README.md` | Cách chạy, bốn cải tiến, bẫy khi dựng, checklist demo |
