@@ -21,27 +21,151 @@ Bài tập nhóm môn Flutter. Nhóm phụ trách **Lab 5 (Architecture)** và
 adfd-group-assignment/
 ├── docker-compose.yml              MySQL 8 + phpMyAdmin (cho máy chưa có MySQL)
 ├── db/init.sql                     Schema + 5 dòng dữ liệu mẫu
-├── adfd05_architecture/           Flutter — 5 flow
+├── docs/                           tài liệu cho thành viên nhóm
+│   ├── tong-quan-lab-5-6.md        bức tranh lớn — ĐỌC CÁI NÀY TRƯỚC
+│   ├── luong-chay-chuong-trinh.md  bấm Run xong máy làm gì
+│   └── cau-truc-du-an.md           cấu trúc thư mục và lý do đằng sau
+├── adfd05_architecture/            Flutter — Lab 5, 5 flow
 └── adfd06_rest_api/
-    ├── adfd06_backend/            Spring Boot 4.1.1 + MySQL, port 8082
-    └── adfd06_frontend/           Flutter — 4 flow
+    ├── adfd06_backend/             Spring Boot 4.1.1 + MySQL, port 8082
+    └── adfd06_frontend/            Flutter — Lab 6, 4 flow
 ```
 
-Đề bài gốc (PDF + source thầy cho) nằm ở repo học Flutter:
-`~/Documents/SelfStudy/flutter/docs/group-assignment/`
+**Người mới vào nhóm đọc theo thứ tự này:**
+
+1. `docs/tong-quan-lab-5-6.md` — hiểu hai lab làm gì (15 phút)
+2. `docs/luong-chay-chuong-trinh.md` — hiểu dữ liệu đi đường nào
+3. `docs/cau-truc-du-an.md` — hiểu vì sao thư mục sắp xếp như vậy
+4. Mục **Cài đặt môi trường** bên dưới — rồi chạy thử
+
+> Đề bài gốc của thầy (file PDF và source mẫu) **không nằm trong repo này**.
+> Hỏi trưởng nhóm để lấy.
 
 ---
 
-## Yêu cầu môi trường
+## Cài đặt môi trường
 
-| Thứ | Phiên bản đã kiểm |
-|---|---|
-| Flutter | 3.47.0 stable |
-| Dart | 3.13.0 |
-| Java | 21 trở lên (đã chạy thử với 25) |
-| Maven | 3.9+ |
-| Docker | để chạy MySQL |
-| Android emulator | API 36, arm64 |
+### Cần những gì
+
+| Thứ | Phiên bản đã kiểm | Lab 5 | Lab 6 |
+|---|---|:--:|:--:|
+| Flutter SDK | 3.47.0 stable | ✅ | ✅ |
+| Dart | 3.13.0 (đi kèm Flutter) | ✅ | ✅ |
+| Android Studio + emulator | API 36 | ✅ | ✅ |
+| JDK | 21 trở lên (đã chạy với 25) | — | ✅ |
+| Maven | 3.9+ | — | ✅ |
+| Docker | bản mới | — | ✅ |
+
+**Chỉ làm Lab 5 thì chỉ cần 3 dòng đầu.** Lab 6 mới cần đủ 6.
+
+---
+
+### Bước 1 — Flutter SDK
+
+**macOS**
+
+```bash
+# cách nhanh nhất
+brew install --cask flutter
+
+# hoặc tải thủ công rồi thêm vào PATH trong ~/.zshrc:
+#   export PATH="$HOME/development/flutter/bin:$PATH"
+```
+
+**Windows**
+
+1. Tải bản zip tại <https://docs.flutter.dev/get-started/install/windows>
+2. Giải nén ra `C:\src\flutter` (**tránh** thư mục có dấu cách như `Program Files`)
+3. Thêm `C:\src\flutter\bin` vào biến môi trường `Path`
+
+Kiểm tra:
+
+```bash
+flutter --version
+```
+
+---
+
+### Bước 2 — Android Studio và máy ảo
+
+1. Cài **Android Studio** từ <https://developer.android.com/studio>
+2. Mở **Settings** → *Languages & Frameworks* → **Android SDK**
+   - Tab **SDK Platforms**: tick **Android 16 (API 36)**
+   - Tab **SDK Tools**: tick **Android SDK Command-line Tools (latest)**
+   - Bấm **Apply**
+3. Chấp nhận license:
+
+```bash
+flutter doctor --android-licenses
+```
+Gõ `y` cho **từng** license cho tới khi hết. Thoát giữa chừng là chưa xong.
+
+4. Tạo máy ảo — **Device Manager** trong Android Studio → *Create Device* →
+   chọn Pixel bất kỳ → chọn system image API 36 → Finish.
+
+> **Nếu `flutter emulators --create` báo không có system image** dù bạn đã cài:
+> đó là lỗi tương thích giữa Flutter và `cmdline-tools` bản mới. Tạo máy ảo
+> bằng giao diện Android Studio như bước 4 là được.
+
+---
+
+### Bước 3 — JDK và Maven *(chỉ cần cho Lab 6)*
+
+**macOS**
+```bash
+brew install openjdk@21 maven
+```
+
+**Windows**
+- JDK: tải Temurin 21 tại <https://adoptium.net>
+- Maven: tải tại <https://maven.apache.org/download.cgi>, giải nén rồi thêm thư
+  mục `bin` vào `Path`
+
+Kiểm tra:
+```bash
+java -version
+mvn -version
+```
+
+---
+
+### Bước 4 — Docker *(chỉ cần cho Lab 6)*
+
+Cài **Docker Desktop** từ <https://www.docker.com/products/docker-desktop>.
+Mở lên và để nó chạy nền.
+
+Kiểm tra:
+```bash
+docker --version
+```
+
+---
+
+### Bước 5 — Kiểm tra tổng thể
+
+```bash
+flutter doctor
+```
+
+Cần thấy `[✓]` ở **Flutter** và **Android toolchain**. Các mục khác (Xcode,
+Chrome) không bắt buộc.
+
+> ⚠️ **`flutter doctor` có thể báo nhầm về license.**
+> Nếu nó hiện `✗ Android license status unknown` **dù bạn đã accept hết**, đó là
+> báo động giả — `cmdline-tools` bản mới đã bỏ cờ `--licenses` mà Flutter vẫn
+> gọi. Cách kiểm chứng thật là **build thử một APK**:
+> ```bash
+> cd adfd05_architecture && flutter build apk --debug
+> ```
+> Build được là license ổn, bỏ qua cảnh báo đó.
+
+Cuối cùng, bật máy ảo và kiểm tra Flutter nhìn thấy nó:
+
+```bash
+flutter emulators                       # xem danh sách
+flutter emulators --launch <tên-máy-ảo>
+flutter devices                         # phải thấy thiết bị android
+```
 
 ---
 
@@ -152,6 +276,13 @@ Emulator Android mới tạo **mặc định bật chế độ máy bay**. Tắt
 adb shell cmd connectivity airplane-mode disable
 ```
 
+Hoặc bấm thẳng trong emulator: kéo thanh trạng thái xuống → tắt biểu tượng
+máy bay.
+
+> **`adb: command not found`?** `adb` không tự nằm trong `PATH`. Đường dẫn đầy đủ:
+> - macOS / Linux: `~/Library/Android/sdk/platform-tools/adb`
+> - Windows: `%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe`
+
 Kiểm tra biểu tượng ✈️ trên thanh trạng thái emulator trước khi kết luận
 backend hỏng.
 
@@ -162,7 +293,8 @@ backend hỏng.
 - điện thoại Android thật → dùng IP LAN của máy tính (`192.168.x.x`)
 - iOS simulator → dùng `localhost`
 
-Hiện đang hardcode ở 5 chỗ trong `api_service.dart`.
+Đổi ở **một chỗ duy nhất** — hằng số `_authority` trong
+`adfd06_rest_api/adfd06_frontend/lib/ex04/core/network/api_client.dart`.
 
 ### 3. Tiếng Việt có dấu
 
@@ -174,8 +306,9 @@ dấu hỏi.
 
 ## Cải tiến của nhóm
 
-Bốn thay đổi so với code thầy cho. Cả bốn đều **sửa lỗi thật**, không phải
-thêm tính năng cho đẹp. Xem diff cụ thể bằng `git log --oneline`.
+Năm thay đổi so với code thầy cho. Bốn cái đầu **sửa lỗi thật**, cái thứ năm là
+áp dụng bài học của Lab 3 và Lab 5 vào Lab 6. Xem diff cụ thể bằng
+`git log --oneline`.
 
 ### 1. Lab 6 — App không còn treo spinner vĩnh viễn
 
@@ -223,7 +356,7 @@ Tiện thể gom địa chỉ backend về một hằng số thay vì lặp ở 
 **Đã thêm:** `InMemoryPostDataSource` — implementation thứ hai của
 `IPostDataSource`, lấy dữ liệu từ một `List` trong RAM.
 
-Đổi **đúng một dòng** trong `ex05/core/di/injection.dart`:
+Đổi **đúng một dòng** trong `adfd05_architecture/lib/ex05/core/di/injection.dart`:
 
 ```dart
 const bool useInMemoryDataSource = false;   // → true
@@ -280,6 +413,37 @@ thuộc hệ quản trị cơ sở dữ liệu.
 đầu vào sai phải là **400 Bad Request**. Muốn đúng chuẩn REST thì cần thêm
 `spring-boot-starter-validation`, gắn `@NotBlank` / `@Size` vào một DTO và bắt
 `MethodArgumentNotValidException`. Chưa làm vì nằm ngoài phạm vi đề bài.
+
+### 5. Lab 6 — Tổ chức lại theo kiến trúc của Lab 5
+
+**Vấn đề:** thầy cố tình để Lab 6 đơn giản vì mỗi lab dạy một thứ. Kết quả là
+`ex04/` chỉ có `models/` `pages/` `providers/` `services/` — không có hợp đồng
+(interface) nào, không tách Entity/Model, `ContactProvider` gọi thẳng
+`ApiService` và tự `jsonDecode`.
+
+**Đã làm:** dựng lại `ex04/` theo đúng khung của Lab 5.
+
+```
+ContactList (UI) → ContactProvider → IContactRepository
+                                            ↑
+                                    ContactRepositoryImpl
+                                            ↓
+                                     IContactDataSource
+                                            ↑
+                                   ContactDataSourceImpl → ApiClient → HTTP
+```
+
+Giống hệt Lab 5, chỉ khác tầng đáy: `ApiClient` (HTTP) thay cho
+`DatabaseHelper` (SQLite).
+
+**Kết quả đo được:** muốn đổi Lab 6 từ REST API sang SQLite giờ chỉ cần viết
+một `ContactDataSourceImpl` khác và sửa **một dòng** trong
+`adfd06_rest_api/adfd06_frontend/lib/ex04/core/di/injection.dart`.
+`ContactProvider`, `ContactRepositoryImpl` và toàn bộ UI không phải sửa gì —
+đúng như cú lật ở cải tiến 3.
+
+**Lab 5 giữ nguyên**, vì `domain/` + `data/` + `presentation/` vốn đã là Clean
+Architecture. Lý do đầy đủ trong `docs/cau-truc-du-an.md`.
 
 ---
 
