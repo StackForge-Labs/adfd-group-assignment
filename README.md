@@ -172,6 +172,69 @@ dấu hỏi.
 
 ---
 
+## Cải tiến của nhóm
+
+Ba thay đổi so với code thầy cho. Cả ba đều **sửa lỗi thật**, không phải thêm
+tính năng cho đẹp. Xem diff cụ thể bằng `git log --oneline`.
+
+### 1. Lab 6 — App không còn treo spinner vĩnh viễn
+
+**Lỗi gốc:** `ContactProvider.loading` khởi tạo là `true` và chỉ được set
+`false` bên trong `if (statusCode == 200)`. Khi backend chết, `http.get` ném
+`SocketException` mà không ai bắt → `loading` mãi là `true`.
+
+Log thật khi chưa sửa:
+```
+E flutter : Unhandled Exception: ClientException with SocketException
+E flutter :   ContactProvider.loadContacts (contact_provider.dart:21)
+```
+
+**Đã sửa:** thêm state thứ ba `error`, bọc mọi lời gọi API bằng `try/catch`,
+và tắt `loading` trong `finally` — khối này chạy trong mọi trường hợp nên
+không còn đường nào thoát ra mà spinner vẫn quay. UI có màn báo lỗi kèm nút
+**Thử lại**.
+
+**Cách demo:** tắt backend → mở app → thấy màn báo lỗi (không phải spinner) →
+bật backend → bấm Thử lại → danh sách hiện ra, không cần tắt mở app.
+
+### 2. Lab 6 — Dựng URI an toàn thay vì nối chuỗi
+
+**Lỗi gốc:** `Uri.parse('...search?keyword=$keyword')` nhét thẳng biến vào URL.
+
+Dấu cách và tiếng Việt có dấu thì không sao — `Uri.parse` tự encode chúng.
+Nhưng các ký tự có ý nghĩa cấu trúc trong URL thì hỏng:
+
+| Gõ vào ô search | Server nhận được |
+|---|---|
+| `John Smith` | `John Smith` ✅ |
+| `Nguyễn Văn` | `Nguyễn Văn` ✅ |
+| `A&B` | `A` ❌ cụt, và `&B` thành query param khác |
+| `C#1` | `C` ❌ cụt |
+| `a+b` | `a b` ❌ sai |
+
+**Đã sửa:** dùng `Uri.http(authority, path, queryParameters)` — Dart tự encode.
+Tiện thể gom địa chỉ backend về một hằng số thay vì lặp ở 5 phương thức.
+
+### 3. Lab 5 — Chứng minh kiến trúc bằng cú lật một dòng
+
+**Vấn đề:** cả 5 flow của Lab 5 chạy lên trông y hệt nhau, nên không thể demo
+được giá trị của bốn tầng trừu tượng.
+
+**Đã thêm:** `InMemoryPostDataSource` — implementation thứ hai của
+`IPostDataSource`, lấy dữ liệu từ một `List` trong RAM.
+
+Đổi **đúng một dòng** trong `ex05/core/di/injection.dart`:
+
+```dart
+const bool useInMemoryDataSource = false;   // → true
+```
+
+App chạy y nguyên: Read, Like/Dislike, Search đều hoạt động, chỉ khác nguồn
+dữ liệu. **Không file nào khác phải sửa** — không Repository, không Provider,
+không UI. Đó chính là Dependency Inversion, nhìn thấy được.
+
+---
+
 ## Checklist trước khi demo
 
 - [ ] Docker đang chạy, container MySQL sống
