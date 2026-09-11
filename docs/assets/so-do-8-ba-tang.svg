@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="down" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="dep" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- ══ CHIỀU GỌI — cột trái ══ -->
+  <text x="24" y="60" font-size="14" fill="#2563eb" font-weight="700">CHIỀU GỌI</text>
+  <text x="24" y="80" font-size="13" fill="#64748b">lúc chạy</text>
+  <line x1="70" y1="100" x2="70" y2="470" stroke="#2563eb" stroke-width="3" marker-end="url(#down)"/>
+
+  <!-- ══ PRESENTATION ══ -->
+  <rect x="130" y="96" width="540" height="112" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/>
+  <text x="154" y="130" font-size="20" fill="#1e40af" font-weight="700">PRESENTATION</text>
+  <text x="154" y="156" font-size="15" fill="#475569">Vẽ màn hình và giữ trạng thái</text>
+  <text x="154" y="188" font-size="17" fill="#0f172a" font-family="ui-monospace, Menlo, monospace">HomePage · PostProvider</text>
+
+  <!-- ══ DOMAIN ══ -->
+  <rect x="130" y="240" width="540" height="120" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="3"/>
+  <text x="154" y="274" font-size="20" fill="#991b1b" font-weight="700">DOMAIN</text>
+  <text x="154" y="300" font-size="15" fill="#475569">Lõi của bài toán — KHÔNG phụ thuộc ai</text>
+  <text x="154" y="332" font-size="17" fill="#0f172a" font-family="ui-monospace, Menlo, monospace">PostEntity · IPostRepository</text>
+  <text x="154" y="352" font-size="13" fill="#dc2626">không import sqflite, không import flutter</text>
+
+  <!-- ══ DATA ══ -->
+  <rect x="130" y="392" width="540" height="120" rx="12" fill="#f8fafc" stroke="#334155" stroke-width="2.5"/>
+  <text x="154" y="426" font-size="20" fill="#0f172a" font-weight="700">DATA</text>
+  <text x="154" y="452" font-size="15" fill="#475569">Biết SQLite, biết tên cột, biết 1 / 0</text>
+  <text x="154" y="482" font-size="16" fill="#0f172a" font-family="ui-monospace, Menlo, monospace">PostModel · PostRepositoryImpl</text>
+  <text x="154" y="502" font-size="16" fill="#0f172a" font-family="ui-monospace, Menlo, monospace">IPostDataSource · PostDataSourceImpl</text>
+
+  <!-- ══ CHIỀU PHỤ THUỘC — cột phải, cùng chỉ vào Domain ══ -->
+  <path d="M700 152 L760 152 L760 285 L700 285" fill="none" stroke="#dc2626" stroke-width="3" marker-end="url(#dep)"/>
+  <path d="M700 452 L760 452 L760 315 L700 315" fill="none" stroke="#dc2626" stroke-width="3" marker-end="url(#dep)"/>
+
+  <text x="782" y="222" font-size="14" fill="#dc2626" font-weight="700">CHIỀU PHỤ THUỘC</text>
+  <text x="782" y="242" font-size="13" fill="#64748b">lúc biên dịch</text>
+  <text x="782" y="272" font-size="14" fill="#991b1b">Hai tầng ngoài</text>
+  <text x="782" y="292" font-size="14" fill="#991b1b">đều chỉ vào Domain.</text>
+  <text x="782" y="322" font-size="14" fill="#991b1b" font-weight="700">Domain không chỉ</text>
+  <text x="782" y="342" font-size="14" fill="#991b1b" font-weight="700">ra ngoài bao giờ.</text>
+
+  <!-- ══ CORE — nằm riêng, không phải một tầng ══ -->
+  <rect x="130" y="540" width="540" height="52" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="2" stroke-dasharray="7 4"/>
+  <text x="154" y="573" font-size="16" fill="#92400e" font-weight="700">CORE</text>
+  <text x="222" y="573" font-size="15" fill="#92400e">hạ tầng dùng chung</text>
+  <text x="378" y="573" font-size="14" fill="#92400e" font-family="ui-monospace, Menlo, monospace">DatabaseHelper · injection.dart</text>
+  <text x="690" y="573" font-size="13" fill="#a16207">không phải một tầng</text>
+</svg>
