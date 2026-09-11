@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" width="1000" height="470" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="d5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <marker id="u5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="34" font-size="17" fill="#94a3b8" font-weight="700">KHUNG Y HỆT LAB 5 — chỉ đổi tầng đáy</text>
+
+  <!-- phần trên: giống Lab 5, tô nhạt -->
+  <rect x="30" y="52" width="620" height="230" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="8 5"/>
+
+  <rect x="60"  y="76" width="250" height="56" rx="9" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+  <text x="185" y="112" text-anchor="middle" font-size="18" fill="#475569">ContactList (UI)</text>
+
+  <line x1="185" y1="132" x2="185" y2="162" stroke="#64748b" stroke-width="2.5" marker-end="url(#d5)"/>
+
+  <rect x="60"  y="166" width="250" height="56" rx="9" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+  <text x="185" y="202" text-anchor="middle" font-size="18" fill="#475569">ContactProvider</text>
+
+  <line x1="310" y1="194" x2="358" y2="194" stroke="#64748b" stroke-width="2.5" marker-end="url(#d5)"/>
+
+  <rect x="362" y="166" width="268" height="56" rx="9" fill="#fef2f2" stroke="#dc2626" stroke-width="2.5"/>
+  <text x="496" y="202" text-anchor="middle" font-size="18" fill="#0f172a">IContactRepository</text>
+
+  <line x1="496" y1="284" x2="496" y2="230" stroke="#dc2626" stroke-width="3.5" marker-end="url(#u5)"/>
+
+  <rect x="350" y="288" width="292" height="56" rx="9" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="496" y="324" text-anchor="middle" font-size="18" fill="#0f172a">ContactRepositoryImpl</text>
+
+  <line x1="496" y1="344" x2="496" y2="374" stroke="#64748b" stroke-width="2.5" marker-end="url(#d5)"/>
+
+  <rect x="362" y="378" width="268" height="56" rx="9" fill="#fef2f2" stroke="#dc2626" stroke-width="2.5"/>
+  <text x="496" y="414" text-anchor="middle" font-size="18" fill="#0f172a">IContactDataSource</text>
+
+  <!-- tầng đáy KHÁC Lab 5 -->
+  <line x1="630" y1="406" x2="686" y2="406" stroke="#64748b" stroke-width="2.5" marker-end="url(#d5)"/>
+
+  <rect x="690" y="290" width="280" height="144" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/>
+  <text x="830" y="320" text-anchor="middle" font-size="15" fill="#2563eb" font-weight="700">TẦNG ĐÁY — KHÁC LAB 5</text>
+  <text x="830" y="354" text-anchor="middle" font-size="18" fill="#0f172a">ApiClient</text>
+  <text x="830" y="382" text-anchor="middle" font-size="16" fill="#475569">↓  HTTP</text>
+  <text x="830" y="408" text-anchor="middle" font-size="17" fill="#0f172a">Spring Boot → MySQL</text>
+
+  <!-- so sánh -->
+  <text x="690" y="96"  font-size="16" fill="#0f172a" font-weight="700">So với Lab 5:</text>
+  <text x="690" y="126" font-size="15" fill="#475569">Lab 5 — DatabaseHelper → SQLite</text>
+  <text x="690" y="152" font-size="15" fill="#2563eb" font-weight="600">Lab 6 — ApiClient → server thật</text>
+  <text x="690" y="186" font-size="14" fill="#64748b">Mọi tầng phía trên</text>
+  <text x="690" y="208" font-size="14" fill="#64748b">giống hệt nhau.</text>
+</svg>
