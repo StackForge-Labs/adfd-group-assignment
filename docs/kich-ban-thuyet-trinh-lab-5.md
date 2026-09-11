@@ -5,7 +5,7 @@ Dành cho **Mai Trung Hậu**. Đây là **lời nói thật**, không phải g�
 Mục tiêu của tài liệu này: đọc xong bạn **tự nói lại được bằng lời của mình**,
 chứ không phải học thuộc.
 
-- **13 slide · cộng dồn thời lượng từng slide là 16 phút 30**
+- **13 slide · cộng dồn thời lượng từng slide là 17 phút 10**
 - Mỗi slide có: ý chính, lời nói, chỉ vào đâu, và câu hỏi có thể bị vặn
 
 > ⚠️ **ĐỌC MỤC "LỖI CẦN SỬA GẤP" Ở CUỐI TRƯỚC KHI IN SLIDE.** Code trên slide
@@ -28,6 +28,103 @@ Nếu bạn chỉ nhớ được một thứ trong cả bài, hãy nhớ cái n�
 | Anh Nam nghỉ → tuyển anh Bình, phòng ban **không đổi cách làm việc** | Đổi Data Source, `PostProvider` không sửa dòng nào |
 
 Mọi slide bên dưới đều quy về phép so sánh này. Khi bí, quay về nó.
+
+---
+
+## Data Source là gì — phần nền, KHÔNG chiếu lên slide
+
+Đọc phần này để **hiểu**, không phải để nói. Nó lấp một lỗ hổng trong mạch bài:
+bốn flow đầu không hề nhắc tới Data Source, tới Flow 5 nó mới xuất hiện.
+
+### Trước Flow 5, `PostRepositoryImpl` làm hai việc cùng lúc
+
+Mở `lib/ex04/data/repositories/post_repository_impl.dart` ra xem. Trong một hàm
+`getPosts()` có đúng hai loại công việc trộn vào nhau:
+
+```dart
+final db = await databaseHelper.getDatabase();
+final rows = await db.query('posts', orderBy: 'id asc');   // ← việc 1: lấy dữ liệu
+
+return rows.map((row) {
+  final model = PostModel(...);                            // ← việc 2: dịch dữ liệu
+  return model.toEntity();
+}).toList();
+```
+
+| | Việc 1 | Việc 2 |
+|---|---|---|
+| Làm gì | Chạy câu lệnh, lấy dữ liệu thô về | Dịch dữ liệu thô sang `PostEntity` |
+| Phải biết gì | SQLite, tên bảng `posts`, cột `is_like` | `PostModel`, `PostEntity`, quy tắc 1/0 ↔ true/false |
+| Đổi khi nào | Khi **đổi nơi chứa dữ liệu** | Khi **đổi cách app hiểu dữ liệu** |
+
+Hai việc này **thay đổi vì hai lý do khác nhau**. Đó là dấu hiệu kinh điển của
+một class đang ôm quá nhiều việc.
+
+### Flow 5 tách đôi chúng ra
+
+```
+TRƯỚC (Flow 4)                      SAU (Flow 5)
+
+PostRepositoryImpl                  PostRepositoryImpl
+  ├── chạy SQL                        └── chỉ dịch Map → Entity
+  └── dịch Map → Entity                     ↓
+        ↓                             IPostDataSource   ← hợp đồng thứ hai
+   DatabaseHelper                           ↑
+                                      PostDataSourceImpl
+                                        └── chỉ chạy SQL
+                                              ↓
+                                        DatabaseHelper
+```
+
+Sau khi tách, mỗi bên chỉ còn một lý do để đổi:
+
+```dart
+// PostDataSourceImpl — chỉ lấy dữ liệu thô, KHÔNG dịch
+Future<List<Map<String, dynamic>>> getPosts() async {
+  final db = await databaseHelper.getDatabase();
+  return db.query('posts', orderBy: 'id asc');
+}
+```
+
+Để ý kiểu trả về: **`Map<String, dynamic>` — dữ liệu thô, y như SQLite trả ra.**
+Data Source cố tình không dịch. Việc dịch là của Repository.
+
+### Định nghĩa một câu cho mỗi cái
+
+| Tên | Trả lời câu hỏi | Biết gì |
+|---|---|---|
+| `IPostRepository` | *App cần gì?* | chỉ biết `PostEntity` |
+| `PostRepositoryImpl` | *Dịch dữ liệu thô sang thứ app hiểu* | biết `PostModel`, quy tắc 1/0 |
+| `IPostDataSource` | *Lấy dữ liệu bằng cách nào?* | chỉ khai báo, không biết gì |
+| `PostDataSourceImpl` | *Lấy từ SQLite* | biết SQL, tên bảng, tên cột |
+
+### Vậy rốt cuộc được gì?
+
+Được đúng **một** thứ, nhưng là thứ quan trọng nhất của cả Lab 5:
+**`PostRepositoryImpl` không còn biết SQLite tồn tại.**
+
+Mở file ex05 ra mà xem — nó **không import `DatabaseHelper`** nữa, chỉ import
+`IPostDataSource`. Nhờ vậy mới có chuyện đổi nguồn dữ liệu bằng một dòng:
+
+```dart
+const bool useInMemoryDataSource = true;   // → InMemoryPostDataSource
+```
+
+`InMemoryPostDataSource` đọc dữ liệu từ một `List` trong RAM, không có SQLite,
+không có câu SQL nào. Vậy mà `PostRepositoryImpl` không sửa một chữ — vì nó chỉ
+làm việc với hợp đồng `IPostDataSource`.
+
+> **Đây chính là cú lật ở slide 12.** Nếu không có Flow 5, cú lật đó không tồn
+> tại: `PostRepositoryImpl` sẽ dính chặt vào `DatabaseHelper`, và muốn đổi nguồn
+> thì phải sửa chính nó.
+
+### Nếu chỉ nhớ được một câu
+
+> **Data Source biết *lấy ở đâu*. Repository biết *dịch thành gì*.**
+
+Quay về ví dụ tuyển dụng: `PostDataSourceImpl` là **nhân viên kho** — xuống kho
+bê hàng lên, không quan tâm hàng dùng làm gì. `PostRepositoryImpl` là **nhân
+viên xử lý** — nhận hàng thô, đóng gói thành thứ phòng ban dùng được.
 
 ---
 ---
@@ -417,7 +514,13 @@ thì chỗ duy nhất phải sửa là `PostModel`."*
 >
 > *Nếu mình viết chúng ngay trong màn hình, thì hỏng hết. Vì lúc đó màn hình lại
 > biết hết mọi tầng bên dưới — biết có `DatabaseHelper`, biết có
-> `PostDataSourceImpl`. Công sức tách ra nãy giờ thành vô nghĩa."*
+> `PostDataSourceImpl`. Công sức tách ra nãy giờ thành vô nghĩa.*
+>
+> *Vậy phải có một nơi biết hết mọi tầng, nhưng **bản thân nó không nằm trong
+> tầng nào**. Nơi đó là gì, em xin nói ở slide sau."*
+
+> **Câu cuối là bắt buộc.** Không có nó, lớp sẽ tưởng bạn quên trả lời. Có nó,
+> câu hỏi thành "cố tình treo" — và slide sau gỡ.
 
 ### Chỉ vào đâu
 Chỉ lần lượt bốn dòng code, cho thấy nó **xâu chuỗi vào nhau** — cái sau dùng
@@ -491,7 +594,7 @@ biết."*
 
 ![Slide 11](assets/slides/slide-11.png)
 
-**Thời lượng:** ~100 giây
+**Thời lượng:** ~140 giây
 **Ý chính:** đây là **bức tranh hoàn chỉnh**. Hai mũi tên đỏ là điều duy nhất
 cần nhớ.
 
@@ -511,9 +614,25 @@ cần nhớ.
 > *Rồi đây, mũi tên đỏ thứ nhất: `PostRepositoryImpl` **cắm ngược lên** hợp đồng
 > đó.*
 >
-> *Ở Flow 5, thầy cho tách thêm một lần nữa: phần chạy câu lệnh SQL được tách ra
-> sau một hợp đồng thứ hai là `IPostDataSource`. Và lại có mũi tên đỏ thứ hai:
-> `PostDataSourceImpl` cắm ngược lên.*
+> *Ở Flow 5, thầy cho tách thêm một lần nữa — và đây là chỗ **`IPostDataSource`
+> lần đầu xuất hiện**, nên em xin dừng lại giải thích.*
+>
+> *Ở bốn bước trước, `PostRepositoryImpl` làm hai việc cùng lúc: vừa **chạy câu
+> lệnh SQL để lấy dữ liệu**, vừa **dịch dữ liệu đó sang `PostEntity`**. Hai việc
+> đó thay đổi vì hai lý do khác nhau — việc đầu đổi khi mình đổi nơi chứa dữ
+> liệu, việc sau đổi khi mình đổi cách app hiểu dữ liệu.*
+>
+> *Flow 5 tách đôi chúng ra. Phần chạy SQL đi xuống `PostDataSourceImpl`. Phần
+> dịch ở lại `PostRepositoryImpl`. Và giữa hai cái là hợp đồng thứ hai:
+> `IPostDataSource`. Lại có mũi tên đỏ thứ hai — `PostDataSourceImpl` cắm ngược
+> lên nó.*
+>
+> *Nói ngắn gọn: **Data Source biết lấy dữ liệu ở đâu. Repository biết dịch nó
+> thành gì.***
+>
+> *Cái này đổi được một chuyện rất lớn: từ giờ **`PostRepositoryImpl` không còn
+> biết SQLite tồn tại nữa** — mở file ra sẽ thấy nó không import `DatabaseHelper`
+> nữa. Lát nữa các bạn sẽ thấy vì sao điều đó quan trọng.*
 >
 > *Cuối cùng mới tới SQLite.*
 >
@@ -686,7 +805,7 @@ Thầy dạy lập trình sẽ **nhận ra ngay trong một giây**. Và câu h�
    phải quen với câu chữ.
 2. **Lần hai, che phần lời nói đi**, chỉ nhìn slide và ý chính, tự nói lại bằng
    lời của mình. Không cần giống hệt.
-3. **Bấm giờ.** Cộng dồn 13 slide là 16 phút 30 — nếu vượt 18 phút thì cắt bớt
+3. **Bấm giờ.** Cộng dồn 13 slide là 17 phút 10 — nếu vượt 19 phút thì cắt bớt
    phần "Nếu bị hỏi", đừng cắt mạch chính.
 4. **Nhờ người khác hỏi vặn** — dùng phần "Nếu bị hỏi" ở mỗi slide.
 
