@@ -27,7 +27,7 @@ adfd-group-assignment/
 │   ├── cau-truc-du-an.md           cấu trúc thư mục và lý do đằng sau
 │   ├── phan-cong-task.md           chia việc 4 người + kịch bản trình bày
 │   ├── lenh-hay-dung.md            tra cứu lệnh Flutter / Maven / Docker
-│   ├── slide-thuyet-trinh-v2.md    nội dung 26 slide — BẢN ĐANG DÙNG
+│   ├── slide-thuyet-trinh-v2.md    nội dung 24 slide — BẢN ĐANG DÙNG
 │   ├── slide-thuyet-trinh.md       v1, 39 slide — giữ để tra chi tiết
 │   └── assets/                     ảnh chụp màn hình dùng cho slide
 ├── adfd05_architecture/            Flutter — Lab 5, 5 flow

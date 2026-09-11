@@ -5,7 +5,7 @@
 
 Tài liệu nguồn để **Hậu và An** dựng slide trên Canva. Tuấn và Trí đọc để góp ý.
 
-- **26 slide / 37 phút** — gọn hơn v1 một phần ba (v1: 39 slide / 46 phút)
+- **24 slide / ~34 phút** — gọn hơn v1 gần một nửa (v1: 39 slide / 46 phút)
 - Ảnh chụp thật nằm trong `docs/assets/`
 - Ngôn ngữ: tiếng Việt, thuật ngữ kỹ thuật giữ nguyên tiếng Anh
 
@@ -16,7 +16,8 @@ Nguyên tắc cắt: **chi tiết nào người nói kể được trong 15 giâ
 | Đã bỏ | Giờ xử lý thế nào |
 |---|---|
 | Slide đổi SQL Server → MySQL | Trí nói một câu khi chiếu sơ đồ backend |
-| Slide `@Column` sửa ràng buộc | Trí nói ngay trên slide nêu lỗi |
+| Slide lỗi `@Column` / ràng buộc schema | **Bỏ hẳn** — chỉ giữ để trả lời nếu thầy hỏi |
+| Slide tổng kết 5 cải tiến | **Bỏ hẳn** — đã nói rải trong từng phần |
 | Slide bảng ký tự `&` `#` `+` | An nói một câu, không cần bảng |
 | Slide `Uri.http` | Gộp vào câu nói trên |
 | Slide `lazySingleton` vs `factory` | Ghi một dòng ở chân slide GetIt |
@@ -33,16 +34,19 @@ demo. Đó là xương sống của cả buổi.
 | Mở đầu | Hậu | 2:00 |
 | 5A | Hậu | 6:30 |
 | 5B | Tuấn | 6:30 |
-| 6A | Trí | 5:30 |
+| 6A | Trí | **4:10** |
 | 6B | An | **8:40** |
-| Demo + kết | An chạy, Hậu chốt | 8:00 |
-| **Tổng** | | **37:10** |
+| Demo + kết | An chạy, Hậu chốt | 7:00 |
+| **Tổng** | | **34:50** |
 
-Còn dư gần 3 phút so với mốc 40 — đệm cho câu hỏi xen ngang và trục trặc máy móc.
+Còn dư hơn 5 phút so với mốc 40 — đệm thoải mái cho câu hỏi xen ngang và trục
+trặc máy móc.
 
-> **An vẫn là người nặng nhất:** 8:40 phần nói cộng 6 phút chạy demo. Nếu tổng
-> duyệt thấy quá tải, chuyển slide 22 (`context.mounted`) sang Tuấn — nó là kiến
-> thức Flutter chung, không riêng Lab 6.
+> ⚠️ **Phần của Trí giờ chỉ còn 4:10, ngắn hơn hẳn ba người kia.** Bỏ slide lỗi
+> `@Column` đã lấy mất gần 1 phút rưỡi của phần này. Hai cách cân bằng:
+> - Trí nói kỹ hơn ở slide 13 và 15 — cùng một slide nhưng giải thích sâu hơn
+> - Hoặc chuyển slide 21 (`context.mounted`) từ An sang Trí, vì đó là kiến thức
+>   Flutter chung. An đang nặng nhất với 8:40 cộng 6 phút demo.
 
 ## Cách đọc tài liệu này
 
@@ -56,7 +60,7 @@ Còn dư gần 3 phút so với mốc 40 — đệm cho câu hỏi xen ngang và
 
 - **Không slide nào quá 5 dòng chữ.**
 - Code chiếu lên **tối đa 10 dòng**.
-- Cả 26 slide dùng **chung một bộ màu và một mẫu**.
+- Cả 24 slide dùng **chung một bộ màu và một mẫu**.
 
 ---
 ---
@@ -381,32 +385,9 @@ Uri.http('10.0.2.2:8082', '/api/contacts')   // 10.0.2.2 = máy host
 
 **Người nói:** *"Đây là toàn bộ việc Flutter làm khi gọi API. Và `10.0.2.2` là địa chỉ đặc biệt để Android emulator trỏ về máy tính — chỗ này ai mới học cũng vấp."*
 
----
-
-### Slide 16 — Nhóm tìm ra một lỗi trong đề bài `[Trí · 80 giây]`
-
-**Nội dung slide:**
-
-```
-POST /api/contacts   {}
-
-→ 200 OK
-  {"id":10, "name":null, "phone":null, ...}
-```
-
-> Tạo thành công một Contact **rỗng hoàn toàn** — trong khi script database
-> của thầy ghi `name` và `phone` là `not null`
-
-```java
-@Column(length = 100, nullable = false)   // ← nhóm em thêm vào
-private String name;
-```
-
-**Người nói:** *"Nhóm em thử gửi request rỗng. Đáng lẽ bị từ chối, nhưng nó tạo thành công."*
-
-*"Nguyên nhân: entity thiếu `@Column`, cộng với `ddl-auto=update` nên Hibernate lấy mặc định của nó và ghi đè lên schema. Thêm `@Column` vào là request rỗng bị chặn đúng như đề bài quy định."*
-
 **Câu chuyển:** *"Dữ liệu đã về tới Model. Giờ làm sao đưa lên màn hình và cho người dùng thao tác? Mời bạn An."*
+
+---
 
 ---
 ---
@@ -415,7 +396,7 @@ private String name;
 
 ---
 
-### Slide 17 — Provider giữ trạng thái API `[An · 80 giây]`
+### Slide 16 — Provider giữ trạng thái API `[An · 80 giây]`
 
 **Nội dung slide:**
 
@@ -436,7 +417,7 @@ class ContactProvider extends ChangeNotifier {
 
 ---
 
-### Slide 18 — Ứng dụng hoàn chỉnh `[An · 60 giây]`
+### Slide 17 — Ứng dụng hoàn chỉnh `[An · 60 giây]`
 
 **Nội dung slide:** ảnh `docs/assets/lab6-list.png` chiếm nửa slide, bên cạnh:
 
@@ -446,7 +427,7 @@ class ContactProvider extends ChangeNotifier {
 
 ---
 
-### Slide 19 — Nhóm áp kiến trúc Lab 5 vào Lab 6 `[An · 100 giây]`
+### Slide 18 — Nhóm áp kiến trúc Lab 5 vào Lab 6 `[An · 100 giây]`
 
 **Hình cần vẽ:** hai cột so sánh.
 
@@ -462,7 +443,7 @@ class ContactProvider extends ChangeNotifier {
 
 ---
 
-### Slide 20 — Cải tiến: app treo spinner vĩnh viễn `[An · 130 giây]`
+### Slide 19 — Cải tiến: app treo spinner vĩnh viễn `[An · 130 giây]`
 
 **Nội dung slide:**
 
@@ -497,7 +478,7 @@ if (response.statusCode == 200) {
 
 ---
 
-### Slide 21 — Kết quả `[An · 70 giây]`
+### Slide 20 — Kết quả `[An · 70 giây]`
 
 **Nội dung slide:** hai ảnh cạnh nhau.
 
@@ -513,7 +494,7 @@ if (response.statusCode == 200) {
 
 ---
 
-### Slide 22 — Một cái bẫy chỉ Flutter mới có `[An · 80 giây]`
+### Slide 21 — Một cái bẫy chỉ Flutter mới có `[An · 80 giây]`
 
 **Nội dung slide:**
 
@@ -536,7 +517,7 @@ Navigator.pop(context);
 
 ---
 
-### Slide 23 — Demo trực tiếp `[An chạy · cả nhóm trả lời · 6 phút]`
+### Slide 22 — Demo trực tiếp `[An chạy · cả nhóm trả lời · 6 phút]`
 
 **Nội dung slide:** chỉ một chữ **DEMO** lớn, kèm checklist nhỏ:
 
@@ -555,23 +536,7 @@ Navigator.pop(context);
 
 ---
 
-### Slide 24 — 5 lỗi nhóm tìm ra và sửa `[Hậu · 60 giây]`
-
-**Nội dung slide:**
-
-| # | Lỗi | Ở đâu |
-|---|---|---|
-| 1 | App treo spinner vĩnh viễn khi backend chết | Lab 6 client |
-| 2 | Search hỏng với `&` `#` `+` | Lab 6 client |
-| 3 | Kiến trúc không chứng minh được giá trị | Lab 5 |
-| 4 | Ràng buộc `not null` bị Hibernate xoá mất | Lab 6 backend |
-| 5 | Lab 6 chưa áp dụng kiến trúc của Lab 5 | Lab 6 |
-
-**Người nói:** *"Cả năm đều là lỗi thật trong code, không phải thêm tính năng cho đẹp."*
-
----
-
-### Slide 25 — Tài liệu tham khảo `[Hậu · 30 giây]`
+### Slide 23 — Tài liệu tham khảo `[Hậu · 30 giây]`
 
 **Nội dung slide:**
 
@@ -588,7 +553,7 @@ Navigator.pop(context);
 
 ---
 
-### Slide 26 — Cảm ơn & Hỏi đáp `[Cả nhóm · 30 giây]`
+### Slide 24 — Cảm ơn & Hỏi đáp `[Cả nhóm · 30 giây]`
 
 **Nội dung slide:**
 
@@ -608,9 +573,9 @@ Navigator.pop(context);
 |---|---|
 | `lab5-sqlite.png` | 12 — bên trái |
 | `lab5-inmemory.png` | 12 — bên phải |
-| `lab6-list.png` | 18 |
-| `lab6-error.png` | 21 — bên trái |
-| `lab6-retry.png` | 21 — bên phải |
+| `lab6-list.png` | 17 |
+| `lab6-error.png` | 20 — bên trái |
+| `lab6-retry.png` | 20 — bên phải |
 | `lab6-form.png` `lab6-after-create.png` `lab6-search.png` | dự phòng |
 
 ## Những thứ KHÔNG có slide — người nói phải nhớ
@@ -622,24 +587,33 @@ Navigator.pop(context);
 | Tuấn | 9 | `LazySingleton` tạo một lần, `Factory` tạo mới mỗi lần |
 | Tuấn | 10 | Flow 5 có bổ sung Search |
 | Trí | 13 | Đổi SQL Server → MySQL tốn đúng 2 dòng |
-| Trí | 16 | Vì sao thiếu `@Column` lại mất ràng buộc `not null` |
-| An | 21 | Search hỏng với `&` `#` `+`, sửa bằng `Uri.http` |
+| An | 20 | Search hỏng với `&` `#` `+`, sửa bằng `Uri.http` |
 
 > **Cắt slide không có nghĩa là cắt kiến thức.** Thầy vẫn có thể hỏi bất kỳ mục
 > nào ở trên — xem `docs/phan-cong-task.md` để ôn câu trả lời.
+
+### Không trình bày, nhưng phải sẵn sàng nếu thầy hỏi
+
+Hai nội dung dưới đây nhóm quyết định **không đưa lên slide** vì là chi tiết nhỏ.
+Nhưng chúng là công sức thật của nhóm, nên nếu thầy hỏi thì phải trả lời được:
+
+| Ai | Nội dung |
+|---|---|
+| **Trí** | **Cải tiến 4** — entity thiếu `@Column` nên `ddl-auto=update` để Hibernate ghi đè schema, làm mất ràng buộc `not null`. `POST {}` tạo được bản ghi rỗng. Sửa bằng `@Column(length, nullable)`. |
+| **Hậu** | Nhóm đã sửa **5 lỗi thật** trong code đề bài — xem bảng đầy đủ trong `README.md` mục *Cải tiến của nhóm*. |
 
 ## Nếu vẫn còn dài, cắt tiếp theo thứ tự này
 
 | Ưu tiên | Slide |
 |---|---|
-| **Không được cắt** | 4 (câu hỏi mở) · 11, 12 (cú lật) · 23 (demo) |
-| Cắt sau cùng | 22 (`context.mounted`) |
+| **Không được cắt** | 4 (câu hỏi mở) · 11, 12 (cú lật) · 22 (demo) |
+| Cắt sau cùng | 21 (`context.mounted`) |
 | Cắt trước | 14 (bảng endpoint) — Trí đọc miệng |
-| Cắt trước nữa | 18 (ảnh app) — vì cuối buổi đã demo thật |
+| Cắt trước nữa | 17 (ảnh app) — vì cuối buổi đã demo thật |
 
 ## Trước ngày trình bày
 
-- [ ] Cả 26 slide dùng **chung một mẫu và bộ màu**
+- [ ] Cả 24 slide dùng **chung một mẫu và bộ màu**
 - [ ] Tổng duyệt có bấm giờ
 - [ ] **Hỏi vặn chéo**: mỗi người trả lời 3 câu trong `docs/phan-cong-task.md`
 - [ ] Xuất **PDF dự phòng**, để trong USB
