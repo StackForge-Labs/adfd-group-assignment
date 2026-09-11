@@ -25,6 +25,7 @@ adfd-group-assignment/
 │   ├── tong-quan-lab-5-6.md        bức tranh lớn — ĐỌC CÁI NÀY TRƯỚC
 │   ├── luong-chay-chuong-trinh.md  bấm Run xong máy làm gì
 │   ├── cau-truc-du-an.md           cấu trúc thư mục và lý do đằng sau
+│   ├── hieu-sau-lab-5.md           giải thích sâu Lab 5 — cho người trình bày
 │   ├── phan-cong-task.md           chia việc 4 người + kịch bản trình bày
 │   ├── lenh-hay-dung.md            tra cứu lệnh Flutter / Maven / Docker
 │   ├── slide-thuyet-trinh-v2.md    nội dung 24 slide + kịch bản nói — BẢN ĐANG DÙNG
