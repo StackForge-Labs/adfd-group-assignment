@@ -13,9 +13,7 @@ class HomePage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'ADFD 5/5: Architecture',
-          ), // UPDATE: Flow 5 - Đổi AppBar title
+          title: const Text('ADFD 5/5: Architecture'),
 
           bottom: const TabBar(
             tabs: [

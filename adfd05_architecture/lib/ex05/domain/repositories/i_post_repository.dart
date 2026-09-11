@@ -5,7 +5,6 @@ abstract class IPostRepository {
 
   Future<void> toggleLike(PostEntity post);
 
-  // UPDATE: Flow 5 - Thêm contract Search cho Repository
   Future<List<PostEntity>> searchPosts(String keyword);
 }
 
