@@ -15,7 +15,7 @@ class PostProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // UPDATE: Flow 2 - thêm xử lý Like/Dislike qua Repository.
+  // Flow 2 - thêm xử lý Like/Dislike qua Repository.
   Future<void> toggleLike(PostEntity post) async {
     post.isLike = !post.isLike;
 

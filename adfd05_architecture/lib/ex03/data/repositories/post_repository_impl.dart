@@ -1,5 +1,5 @@
 import '../../core/database/database_helper.dart';
-import '../models/post_model.dart'; // UPDATE: Flow 3 - Repository sử dụng PostModel để mapping
+import '../models/post_model.dart';
 import '../../domain/entities/post_entity.dart';
 import '../../domain/repositories/i_post_repository.dart';
 
@@ -20,7 +20,7 @@ class PostRepositoryImpl implements IPostRepository {
         title: row['title'] as String,
         content: row['content'] as String,
         isLike: row['is_like'] as int,
-      ); // UPDATE: Flow 3 - SQLite Map → PostModel
+      ); // Flow 3 - SQLite Map → PostModel
 
       return model.toEntity(); // UPDATE: Flow 3 - PostModel → PostEntity
     }).toList();
@@ -31,13 +31,13 @@ class PostRepositoryImpl implements IPostRepository {
     final db = await databaseHelper.getDatabase();
 
     final model = PostModel.fromEntity(post);
-    // UPDATE: Flow 3 - PostEntity → PostModel
+    // Flow 3 - PostEntity → PostModel
 
     await db.update(
       'posts',
       {
         'is_like': model.isLike,
-      }, // UPDATE: Flow 3 - PostModel cung cấp giá trị theo Data Source
+      }, // Flow 3 - PostModel cung cấp giá trị theo Data Source
       where: 'id = ?',
       whereArgs: [model.id],
     );

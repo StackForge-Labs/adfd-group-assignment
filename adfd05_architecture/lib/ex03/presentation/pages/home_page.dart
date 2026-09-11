@@ -13,22 +13,22 @@ class HomePage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('ADFD 3/5: Architecture'), // UPDATE: Flow 3
+          title: const Text('ADFD 3/5: Architecture'),
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Home'),
               Tab(text: 'Favourite'),
             ],
-          ), // UPDATE: Flow 3 - Home/Favourite dùng TabBar
+          ),
         ),
         body: TabBarView(
           children: [
             _buildPostList(provider.posts),
             _buildPostList(
               provider.posts.where((post) => post.isLike).toList(),
-            ), // UPDATE: Flow 3 - Favourite chỉ hiển thị Post đã Like
+            ),
           ],
-        ), // UPDATE: Flow 3 - Nội dung tương ứng với từng Tab
+        ),
       ),
     );
   }

@@ -1,5 +1,5 @@
 class PostEntity {
-  final int? id; // UPDATE: Flow 2 - thêm id để ánh xạ với SQLite
+  final int? id;
   final String title;
   final String content;
   bool isLike;

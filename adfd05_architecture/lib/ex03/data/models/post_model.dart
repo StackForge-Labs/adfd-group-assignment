@@ -13,7 +13,7 @@ class PostModel {
     this.isLike = 0,
   });
 
-  // UPDATE: Flow 3 - PostModel → PostEntity.
+  // Flow 3 - PostModel → PostEntity.
   PostEntity toEntity() {
     return PostEntity(
       id: id,
@@ -23,7 +23,7 @@ class PostModel {
     );
   }
 
-  // UPDATE: Flow 3 - PostEntity → PostModel.
+  // Flow 3 - PostEntity → PostModel.
   factory PostModel.fromEntity(PostEntity entity) {
     return PostModel(
       id: entity.id,
