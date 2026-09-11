@@ -23,7 +23,7 @@ class ApiClient {
   // 10.0.2.2 là địa chỉ ĐẶC BIỆT chỉ Android emulator hiểu, nó trỏ về máy
   // host. Chạy trên điện thoại thật phải đổi thành IP LAN của máy tính, chạy
   // iOS simulator thì dùng localhost.
-  static const String _authority = '10.0.2.2:8082';
+  static const String _authority = 'localhost:8082';
   static const String _path = '/api/contacts';
 
   static const Map<String, String> _jsonHeaders = {
