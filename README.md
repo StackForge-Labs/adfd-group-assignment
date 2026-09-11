@@ -25,11 +25,14 @@ adfd-group-assignment/
 │   ├── tong-quan-lab-5-6.md        bức tranh lớn — ĐỌC CÁI NÀY TRƯỚC
 │   ├── luong-chay-chuong-trinh.md  bấm Run xong máy làm gì
 │   ├── cau-truc-du-an.md           cấu trúc thư mục và lý do đằng sau
+│   ├── hieu-sau-lab-5.md           giải thích sâu Lab 5 — cho người trình bày
+│   ├── kich-ban-thuyet-trinh-lab-5.md  lời nói từng slide 1-12
 │   ├── phan-cong-task.md           chia việc 4 người + kịch bản trình bày
 │   ├── lenh-hay-dung.md            tra cứu lệnh Flutter / Maven / Docker
-│   ├── slide-thuyet-trinh-v2.md    nội dung 24 slide — BẢN ĐANG DÙNG
+│   ├── slide-thuyet-trinh-v2.md    nội dung 24 slide + kịch bản nói — BẢN ĐANG DÙNG
+│   ├── slide-noi-dung-thuan.md     chỉ thứ chiếu lên màn hình — đầu vào cho Canva
 │   ├── slide-thuyet-trinh.md       v1, 39 slide — giữ để tra chi tiết
-│   └── assets/                     ảnh chụp màn hình dùng cho slide
+│   └── assets/                     7 sơ đồ (svg + png) + 8 ảnh chụp màn hình
 ├── adfd05_architecture/            Flutter — Lab 5, 5 flow
 └── adfd06_rest_api/
     ├── adfd06_backend/             Spring Boot 4.1.1 + MySQL, port 8082

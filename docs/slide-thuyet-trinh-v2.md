@@ -5,7 +5,7 @@
 
 Tài liệu nguồn để **Hậu và An** dựng slide trên Canva. Tuấn và Trí đọc để góp ý.
 
-- **24 slide / ~34 phút** — gọn hơn v1 gần một nửa (v1: 39 slide / 46 phút)
+- **25 slide / ~36 phút** — gọn hơn v1 gần một nửa (v1: 39 slide / 46 phút)
 - Ảnh chụp thật nằm trong `docs/assets/`
 - Ngôn ngữ: tiếng Việt, thuật ngữ kỹ thuật giữ nguyên tiếng Anh
 
@@ -32,20 +32,20 @@ demo. Đó là xương sống của cả buổi.
 | Phần | Người | Thời lượng |
 |---|---|---|
 | Mở đầu | Hậu | 2:00 |
-| 5A | Hậu | 6:30 |
+| 5A | Hậu | **8:00** |
 | 5B | Tuấn | 6:30 |
 | 6A | Trí | **4:10** |
 | 6B | An | **8:40** |
 | Demo + kết | An chạy, Hậu chốt | 7:00 |
-| **Tổng** | | **34:50** |
+| **Tổng** | | **36:20** |
 
-Còn dư hơn 5 phút so với mốc 40 — đệm thoải mái cho câu hỏi xen ngang và trục
-trặc máy móc.
+Còn dư gần 4 phút so với mốc 40 — vẫn đủ đệm cho câu hỏi xen ngang và trục trặc
+máy móc, nhưng đã sát hơn v2 gốc: đừng để phần nào tràn.
 
 > ⚠️ **Phần của Trí giờ chỉ còn 4:10, ngắn hơn hẳn ba người kia.** Bỏ slide lỗi
 > `@Column` đã lấy mất gần 1 phút rưỡi của phần này. Hai cách cân bằng:
-> - Trí nói kỹ hơn ở slide 13 và 15 — cùng một slide nhưng giải thích sâu hơn
-> - Hoặc chuyển slide 21 (`context.mounted`) từ An sang Trí, vì đó là kiến thức
+> - Trí nói kỹ hơn ở slide 14 và 16 — cùng một slide nhưng giải thích sâu hơn
+> - Hoặc chuyển slide 22 (`context.mounted`) từ An sang Trí, vì đó là kiến thức
 >   Flutter chung. An đang nặng nhất với 8:40 cộng 6 phút demo.
 
 ## Cách đọc tài liệu này
@@ -60,7 +60,7 @@ trặc máy móc.
 
 - **Không slide nào quá 5 dòng chữ.**
 - Code chiếu lên **tối đa 10 dòng**.
-- Cả 24 slide dùng **chung một bộ màu và một mẫu**.
+- Cả 25 slide dùng **chung một bộ màu và một mẫu**.
 
 ---
 ---
@@ -113,7 +113,7 @@ trặc máy móc.
 ---
 ---
 
-# PHẦN 5A — Vì sao phải tách tầng · Hậu · 6 phút 30
+# PHẦN 5A — Vì sao phải tách tầng · Hậu · 8 phút
 
 ---
 
@@ -132,7 +132,44 @@ trặc máy móc.
 
 ---
 
-### Slide 5 — Flow 1: Tạo hợp đồng trước `[Hậu · 100 giây]`
+### Slide 5 — Bản đồ ba tầng `[Hậu · 90 giây]`
+
+**Nội dung slide**
+
+**PRESENTATION** — vẽ màn hình, giữ trạng thái
+`HomePage` · `PostProvider`
+
+**DOMAIN** — lõi bài toán, KHÔNG phụ thuộc ai
+`PostEntity` · `IPostRepository`
+
+**DATA** — biết SQLite, biết tên cột, biết 1 / 0
+`PostModel` · `PostRepositoryImpl` · `IPostDataSource` · `PostDataSourceImpl`
+
+*CORE (không phải một tầng)* — `DatabaseHelper` · `injection.dart`
+
+**Hình cần vẽ** — `assets/so-do-8-ba-tang.svg`, chiếm gần hết slide.
+Ba khối xếp chồng; mũi tên **xanh** bên trái đi **xuống** (chiều gọi, lúc chạy);
+hai mũi tên **đỏ** bên phải cùng chỉ **vào Domain** (chiều phụ thuộc, lúc biên
+dịch). Khung `CORE` nét đứt nằm tách dưới cùng.
+
+**Người nói**
+
+Ba tầng: Presentation vẽ màn hình, Domain là lõi và không phụ thuộc ai — mở
+`PostEntity` ra không có lấy một dòng `import sqflite` — Data là tầng biết chuyện
+bẩn. Core không phải tầng thứ tư, chỉ là hạ tầng dùng chung.
+
+Chỗ quan trọng nhất: **hai mũi tên chỉ ngược nhau, và đó không phải lỗi vẽ.**
+Xanh là chiều gọi lúc chạy, đi từ trên xuống. Đỏ là chiều phụ thuộc lúc biên
+dịch — cả tầng trên lẫn tầng dưới **đều chỉ vào Domain**, còn Domain thì không
+chỉ ra ngoài bao giờ. Đó chính là lý do đổi database mà giao diện không phải sửa.
+Phần còn lại của bài chỉ đang chứng minh câu này.
+
+> Đây là slide bản đồ. Không có code — cố ý. Toàn bộ các slide sau là đi lại tấm
+> bản đồ này một cách chậm rãi.
+
+---
+
+### Slide 6 — Flow 1: Tạo hợp đồng trước `[Hậu · 100 giây]`
 
 **Nội dung slide:**
 
@@ -158,7 +195,7 @@ Mũi tên `↑` **tô màu khác** — chi tiết quan trọng nhất.
 
 ---
 
-### Slide 6 — Flow 2: Thay ruột, tầng trên không đổi `[Hậu · 100 giây]`
+### Slide 7 — Flow 2: Thay ruột, tầng trên không đổi `[Hậu · 100 giây]`
 
 **Nội dung slide:**
 
@@ -171,13 +208,13 @@ class PostRepositoryImpl implements IPostRepository {
 }
 ```
 
-**Hình cần vẽ:** sơ đồ slide 5, nhánh dưới đổi thành `PostRepositoryImpl → SQLite`. Phần trên (`HomePage`, `PostProvider`, `IPostRepository`) **tô xám, ghi "KHÔNG ĐỔI"**.
+**Hình cần vẽ:** sơ đồ slide 6, nhánh dưới đổi thành `PostRepositoryImpl → SQLite`. Phần trên (`HomePage`, `PostProvider`, `IPostRepository`) **tô xám, ghi "KHÔNG ĐỔI"**.
 
 **Người nói:** *"Flow 2 vứt dữ liệu giả đi, thay bằng SQLite thật. Và `HomePage` với `PostProvider` không phải sửa một dòng nào. Đó là lợi ích đầu tiên nhìn thấy được."*
 
 ---
 
-### Slide 7 — Flow 3: `PostModel` làm người phiên dịch `[Hậu · 130 giây]`
+### Slide 8 — Flow 3: `PostModel` làm người phiên dịch `[Hậu · 130 giây]`
 
 **Nội dung slide:**
 
@@ -212,7 +249,7 @@ is_like=1  →  isLike: 1    →   isLike: true  →   ❤️
 
 ---
 
-### Slide 8 — Vấn đề: ai nối các mảnh? `[Tuấn · 60 giây]`
+### Slide 9 — Vấn đề: ai nối các mảnh? `[Tuấn · 60 giây]`
 
 **Nội dung slide:**
 
@@ -228,7 +265,7 @@ final provider   = PostProvider(repository);
 
 ---
 
-### Slide 9 — Flow 4: GetIt `[Tuấn · 100 giây]`
+### Slide 10 — Flow 4: GetIt `[Tuấn · 100 giây]`
 
 **Nội dung slide:**
 
@@ -255,7 +292,7 @@ void setDI() {
 
 ---
 
-### Slide 10 — Flow 5: Chuỗi hoàn chỉnh `[Tuấn · 100 giây]`
+### Slide 11 — Flow 5: Chuỗi hoàn chỉnh `[Tuấn · 100 giây]`
 
 **Hình cần vẽ:** sơ đồ trung tâm của cả bài — **vẽ to, chiếm gần hết slide**:
 
@@ -281,7 +318,7 @@ HomePage  →  PostProvider  →  IPostRepository
 
 ---
 
-### Slide 11 — Câu hỏi đầu buổi, giờ trả lời được `[Tuấn · 70 giây]`
+### Slide 12 — Câu hỏi đầu buổi, giờ trả lời được `[Tuấn · 70 giây]`
 
 **Nội dung slide:**
 
@@ -296,7 +333,7 @@ const bool useInMemoryDataSource = false;   // ← đổi thành true
 
 ---
 
-### Slide 12 — Bằng chứng `[Tuấn · 60 giây]`
+### Slide 13 — Bằng chứng `[Tuấn · 60 giây]`
 
 **Nội dung slide:** hai ảnh chụp thật **đặt cạnh nhau**, cùng kích thước.
 
@@ -321,9 +358,9 @@ const bool useInMemoryDataSource = false;   // ← đổi thành true
 
 ---
 
-### Slide 13 — Lab 6 dùng lại kiến trúc, đổi tầng đáy `[Trí · 90 giây]`
+### Slide 14 — Lab 6 dùng lại kiến trúc, đổi tầng đáy `[Trí · 90 giây]`
 
-**Hình cần vẽ:** sơ đồ slide 10, nhưng tầng đáy đổi:
+**Hình cần vẽ:** sơ đồ slide 11, nhưng tầng đáy đổi:
 
 ```
 ...  →  IContactDataSource
@@ -347,7 +384,7 @@ Controller  →  Service  →  Repository  →  JPA  →  MySQL
 
 ---
 
-### Slide 14 — 5 endpoint `[Trí · 60 giây]`
+### Slide 15 — 5 endpoint `[Trí · 60 giây]`
 
 **Nội dung slide:**
 
@@ -361,7 +398,7 @@ Controller  →  Service  →  Repository  →  JPA  →  MySQL
 
 ---
 
-### Slide 15 — Từ JSON tới Model `[Trí · 100 giây]`
+### Slide 16 — Từ JSON tới Model `[Trí · 100 giây]`
 
 **Hình cần vẽ:** chuỗi biến đổi, vẽ ngang, mỗi bước một hộp:
 
@@ -396,7 +433,7 @@ Uri.http('10.0.2.2:8082', '/api/contacts')   // 10.0.2.2 = máy host
 
 ---
 
-### Slide 16 — Provider giữ trạng thái API `[An · 80 giây]`
+### Slide 17 — Provider giữ trạng thái API `[An · 80 giây]`
 
 **Nội dung slide:**
 
@@ -417,7 +454,7 @@ class ContactProvider extends ChangeNotifier {
 
 ---
 
-### Slide 17 — Ứng dụng hoàn chỉnh `[An · 60 giây]`
+### Slide 18 — Ứng dụng hoàn chỉnh `[An · 60 giây]`
 
 **Nội dung slide:** ảnh `docs/assets/lab6-list.png` chiếm nửa slide, bên cạnh:
 
@@ -427,7 +464,7 @@ class ContactProvider extends ChangeNotifier {
 
 ---
 
-### Slide 18 — Nhóm áp kiến trúc Lab 5 vào Lab 6 `[An · 100 giây]`
+### Slide 19 — Nhóm áp kiến trúc Lab 5 vào Lab 6 `[An · 100 giây]`
 
 **Hình cần vẽ:** hai cột so sánh.
 
@@ -443,7 +480,7 @@ class ContactProvider extends ChangeNotifier {
 
 ---
 
-### Slide 19 — Cải tiến: app treo spinner vĩnh viễn `[An · 130 giây]`
+### Slide 20 — Cải tiến: app treo spinner vĩnh viễn `[An · 130 giây]`
 
 **Nội dung slide:**
 
@@ -478,7 +515,7 @@ if (response.statusCode == 200) {
 
 ---
 
-### Slide 20 — Kết quả `[An · 70 giây]`
+### Slide 21 — Kết quả `[An · 70 giây]`
 
 **Nội dung slide:** hai ảnh cạnh nhau.
 
@@ -494,7 +531,7 @@ if (response.statusCode == 200) {
 
 ---
 
-### Slide 21 — Một cái bẫy chỉ Flutter mới có `[An · 80 giây]`
+### Slide 22 — Một cái bẫy chỉ Flutter mới có `[An · 80 giây]`
 
 **Nội dung slide:**
 
@@ -517,7 +554,7 @@ Navigator.pop(context);
 
 ---
 
-### Slide 22 — Demo trực tiếp `[An chạy · cả nhóm trả lời · 6 phút]`
+### Slide 23 — Demo trực tiếp `[An chạy · cả nhóm trả lời · 6 phút]`
 
 **Nội dung slide:** chỉ một chữ **DEMO** lớn, kèm checklist nhỏ:
 
@@ -536,7 +573,7 @@ Navigator.pop(context);
 
 ---
 
-### Slide 23 — Tài liệu tham khảo `[Hậu · 30 giây]`
+### Slide 24 — Tài liệu tham khảo `[Hậu · 30 giây]`
 
 **Nội dung slide:**
 
@@ -553,7 +590,7 @@ Navigator.pop(context);
 
 ---
 
-### Slide 24 — Cảm ơn & Hỏi đáp `[Cả nhóm · 30 giây]`
+### Slide 25 — Cảm ơn & Hỏi đáp `[Cả nhóm · 30 giây]`
 
 **Nội dung slide:**
 
