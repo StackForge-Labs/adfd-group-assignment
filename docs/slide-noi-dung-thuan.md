@@ -1,4 +1,4 @@
-# Nội dung thuần để dựng slide — 24 slide
+# Nội dung thuần để dựng slide — 25 slide
 
 > **File này CHỈ chứa thứ hiện lên màn hình.** Không có lời thoại, không có ghi
 > chú đạo diễn. Dùng làm đầu vào cho Canva hoặc bất kỳ công cụ tạo slide nào.
@@ -52,7 +52,26 @@ GVHD: Lê Thanh Nhân
 
 ---
 
-## Slide 5 — Flow 1: Tạo hợp đồng trước
+## Slide 5 — Bản đồ ba tầng
+
+**PRESENTATION** — vẽ màn hình, giữ trạng thái
+`HomePage` · `PostProvider`
+
+**DOMAIN** — lõi bài toán, KHÔNG phụ thuộc ai
+`PostEntity` · `IPostRepository`
+
+**DATA** — biết SQLite, biết tên cột, biết 1 / 0
+`PostModel` · `PostRepositoryImpl` · `IPostDataSource` · `PostDataSourceImpl`
+
+*CORE (không phải một tầng)* — `DatabaseHelper` · `injection.dart`
+
+> **Chiều gọi** (lúc chạy) đi xuống — **chiều phụ thuộc** (lúc biên dịch) đi vào Domain.
+
+🖼️ **Sơ đồ:** `assets/so-do-8-ba-tang.svg` — **chiếm gần hết slide, chữ ở trên chỉ là nội dung của sơ đồ**
+
+---
+
+## Slide 6 — Flow 1: Tạo hợp đồng trước
 
 ```dart
 abstract class IPostRepository {
@@ -64,7 +83,7 @@ abstract class IPostRepository {
 
 ---
 
-## Slide 6 — Flow 2: Thay ruột, tầng trên không đổi
+## Slide 7 — Flow 2: Thay ruột, tầng trên không đổi
 
 ```dart
 class PostRepositoryImpl implements IPostRepository {
@@ -79,7 +98,7 @@ class PostRepositoryImpl implements IPostRepository {
 
 ---
 
-## Slide 7 — Flow 3: `PostModel` làm người phiên dịch
+## Slide 8 — Flow 3: `PostModel` làm người phiên dịch
 
 > **SQLite không có kiểu `true` / `false`** — nó chỉ lưu số `1` và `0`
 
@@ -97,7 +116,7 @@ class PostModel {
 
 ---
 
-## Slide 8 — Ai nối các mảnh?
+## Slide 9 — Ai nối các mảnh?
 
 ```dart
 final helper     = DatabaseHelper();
@@ -110,7 +129,7 @@ final provider   = PostProvider(repository);
 
 ---
 
-## Slide 9 — Flow 4: GetIt
+## Slide 10 — Flow 4: GetIt
 
 ```dart
 void setDI() {
@@ -129,7 +148,7 @@ void setDI() {
 
 ---
 
-## Slide 10 — Flow 5: Chuỗi phụ thuộc hoàn chỉnh
+## Slide 11 — Flow 5: Chuỗi phụ thuộc hoàn chỉnh
 
 🖼️ **Sơ đồ:** `assets/so-do-4-chuoi-phu-thuoc.svg` — *vẽ to, chiếm gần hết slide*
 
@@ -137,7 +156,7 @@ void setDI() {
 
 ---
 
-## Slide 11 — Câu trả lời
+## Slide 12 — Câu trả lời
 
 ```dart
 // adfd05_architecture/lib/ex05/core/di/injection.dart
@@ -148,7 +167,7 @@ const bool useInMemoryDataSource = false;   // → true
 
 ---
 
-## Slide 12 — Bằng chứng
+## Slide 13 — Bằng chứng
 
 🖼️ **Hai ảnh đặt cạnh nhau:**
 
@@ -163,13 +182,13 @@ const bool useInMemoryDataSource = false;   // → true
 
 ---
 
-## Slide 13 — Lab 6 dùng lại kiến trúc, đổi tầng đáy
+## Slide 14 — Lab 6 dùng lại kiến trúc, đổi tầng đáy
 
 🖼️ **Sơ đồ:** `assets/so-do-5-lab6-kien-truc.svg`
 
 ---
 
-## Slide 14 — 5 endpoint
+## Slide 15 — 5 endpoint
 
 | Method | Endpoint | Chức năng |
 |---|---|---|
@@ -181,7 +200,7 @@ const bool useInMemoryDataSource = false;   // → true
 
 ---
 
-## Slide 15 — Từ JSON tới Model
+## Slide 16 — Từ JSON tới Model
 
 🖼️ **Sơ đồ:** `assets/so-do-6-json-model.svg`
 
@@ -191,7 +210,7 @@ Uri.http('10.0.2.2:8082', '/api/contacts')   // 10.0.2.2 = máy host
 
 ---
 
-## Slide 16 — Provider giữ trạng thái API
+## Slide 17 — Provider giữ trạng thái API
 
 ```dart
 class ContactProvider extends ChangeNotifier {
@@ -208,7 +227,7 @@ class ContactProvider extends ChangeNotifier {
 
 ---
 
-## Slide 17 — Ứng dụng hoàn chỉnh
+## Slide 18 — Ứng dụng hoàn chỉnh
 
 🖼️ **Ảnh:** `assets/lab6-list.png` *(chiếm nửa slide)*
 
@@ -216,7 +235,7 @@ Xem · Thêm · Sửa · Xoá · Tìm kiếm
 
 ---
 
-## Slide 18 — Nhóm áp kiến trúc Lab 5 vào Lab 6
+## Slide 19 — Nhóm áp kiến trúc Lab 5 vào Lab 6
 
 | Đề bài cho | Nhóm em làm |
 |---|---|
@@ -226,7 +245,7 @@ Xem · Thêm · Sửa · Xoá · Tìm kiếm
 
 ---
 
-## Slide 19 — Cải tiến: app treo spinner vĩnh viễn
+## Slide 20 — Cải tiến: app treo spinner vĩnh viễn
 
 ```dart
 bool loading = true;
@@ -241,7 +260,7 @@ if (response.statusCode == 200) {
 
 ---
 
-## Slide 20 — Kết quả
+## Slide 21 — Kết quả
 
 🖼️ **Hai ảnh đặt cạnh nhau:**
 
@@ -251,7 +270,7 @@ if (response.statusCode == 200) {
 
 ---
 
-## Slide 21 — Một cái bẫy chỉ Flutter mới có
+## Slide 22 — Một cái bẫy chỉ Flutter mới có
 
 ```dart
 await context.read<ContactProvider>().addContact(contact);
@@ -263,7 +282,7 @@ Navigator.pop(context);
 
 ---
 
-## Slide 22 — Demo
+## Slide 23 — Demo
 
 # DEMO
 
@@ -275,7 +294,7 @@ Navigator.pop(context);
 
 ---
 
-## Slide 23 — Tài liệu tham khảo
+## Slide 24 — Tài liệu tham khảo
 
 **Tài liệu chính thống**
 - Flutter — https://docs.flutter.dev
@@ -290,7 +309,7 @@ Navigator.pop(context);
 
 ---
 
-## Slide 24 — Cảm ơn
+## Slide 25 — Cảm ơn
 
 # Cảm ơn thầy và các bạn đã lắng nghe
 
@@ -303,15 +322,16 @@ Navigator.pop(context);
 
 | File | Slide | Loại |
 |---|---|---|
-| `so-do-1-hop-dong.svg` | 5 | sơ đồ |
-| `so-do-2-thay-ruot.svg` | 6 | sơ đồ |
-| `so-do-3-mapping.svg` | 7 | sơ đồ |
-| `so-do-4-chuoi-phu-thuoc.svg` | 10 | sơ đồ — **quan trọng nhất** |
-| `so-do-5-lab6-kien-truc.svg` | 13 | sơ đồ |
-| `so-do-6-json-model.svg` | 15 | sơ đồ |
-| `so-do-7-ba-trang-thai.svg` | 19 | sơ đồ |
-| `lab5-sqlite.png` | 12 | ảnh chụp |
-| `lab5-inmemory.png` | 12 | ảnh chụp |
-| `lab6-list.png` | 17 | ảnh chụp |
-| `lab6-error.png` | 20 | ảnh chụp |
-| `lab6-retry.png` | 20 | ảnh chụp |
+| `so-do-8-ba-tang.svg` | 5 | sơ đồ — **bản đồ tổng quan** |
+| `so-do-1-hop-dong.svg` | 6 | sơ đồ |
+| `so-do-2-thay-ruot.svg` | 7 | sơ đồ |
+| `so-do-3-mapping.svg` | 8 | sơ đồ |
+| `so-do-4-chuoi-phu-thuoc.svg` | 11 | sơ đồ — **quan trọng nhất** |
+| `so-do-5-lab6-kien-truc.svg` | 14 | sơ đồ |
+| `so-do-6-json-model.svg` | 16 | sơ đồ |
+| `so-do-7-ba-trang-thai.svg` | 20 | sơ đồ |
+| `lab5-sqlite.png` | 13 | ảnh chụp |
+| `lab5-inmemory.png` | 13 | ảnh chụp |
+| `lab6-list.png` | 18 | ảnh chụp |
+| `lab6-error.png` | 21 | ảnh chụp |
+| `lab6-retry.png` | 21 | ảnh chụp |
