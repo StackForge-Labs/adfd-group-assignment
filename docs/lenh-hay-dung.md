@@ -54,6 +54,9 @@ Cột giữa (`emulator-5554`) chính là **device id**, dùng cho `-d` ở các
 > ```bash
 > adb shell cmd connectivity airplane-mode disable
 > ```
+>
+> `adb` thường **không có sẵn trong PATH**. Nếu báo `command not found`, dùng
+> đường dẫn đầy đủ: `~/Library/Android/sdk/platform-tools/adb`
 
 ---
 
