@@ -1,15 +1,15 @@
-# Kịch bản thuyết trình Lab 5 — slide 1 đến 12
+# Kịch bản thuyết trình Lab 5 — slide 1 đến 13
 
 Dành cho **Mai Trung Hậu**. Đây là **lời nói thật**, không phải gạch đầu dòng.
 
 Mục tiêu của tài liệu này: đọc xong bạn **tự nói lại được bằng lời của mình**,
 chứ không phải học thuộc.
 
-- **12 slide · khoảng 13 phút**
+- **13 slide · cộng dồn thời lượng từng slide là 16 phút 30**
 - Mỗi slide có: ý chính, lời nói, chỉ vào đâu, và câu hỏi có thể bị vặn
 
 > ⚠️ **ĐỌC MỤC "LỖI CẦN SỬA GẤP" Ở CUỐI TRƯỚC KHI IN SLIDE.** Code trên slide
-> 5, 6, 7, 8, 9 đang bị hiển thị sai thứ tự — phải sửa trước khi trình bày.
+> 6, 7, 8, 9, 10 đang bị hiển thị sai thứ tự — phải sửa trước khi trình bày.
 
 ---
 
@@ -117,7 +117,7 @@ cần mạng. Nó lưu thành một file. Nhóm làm Lab 2 đã trình bày kỹ
 **Ý chính:** gieo một câu hỏi, **không trả lời**, để lớp mang theo suốt bài.
 
 > Đây là slide quan trọng nhất về mặt dẫn dắt. Nếu làm tốt, cả lớp sẽ tò mò tới
-> tận slide 11.
+> tận slide 12.
 
 ### Lời nói
 
@@ -137,16 +137,112 @@ cần mạng. Nó lưu thành một file. Nhóm làm Lab 2 đã trình bày kỹ
 
 ### Lưu ý quan trọng
 **Đừng trả lời câu hỏi này.** Cũng đừng nói "câu trả lời là một dòng" ở đây.
-Toàn bộ sức mạnh của slide 11 nằm ở chỗ lớp phải chờ.
+Toàn bộ sức mạnh của slide 12 nằm ở chỗ lớp phải chờ.
 
 Nếu có bạn nào buột miệng đoán — cứ cười và nói *"lát nữa mình sẽ biết"*.
 
 ---
 ---
 
-# Slide 5 — Flow 1: Tạo hợp đồng trước
+# Slide 5 — Bản đồ ba tầng
 
-![Slide 5](assets/slides/slide-05.png)
+> 🆕 **SLIDE MỚI — chưa có trong file pptx hiện tại.** Phải thêm vào Canva ở giữa
+> slide 4 và slide 5 cũ, rồi export lại toàn bộ PNG. Sau khi export xong, đổi ảnh
+> bên dưới thành `assets/slides/slide-05.png`.
+
+![Sơ đồ ba tầng](assets/so-do-8-ba-tang.png)
+
+**Thời lượng:** ~90 giây
+**Ý chính:** đưa cho lớp **tấm bản đồ** trước khi đi vào từng con đường nhỏ. Và
+quan trọng nhất: cho thấy có **hai chiều mũi tên khác nhau**, đừng lẫn lộn.
+
+> Slide này không có code. Đừng vội. Cả phần còn lại của bài chỉ là đi lại tấm
+> bản đồ này một cách chậm rãi.
+
+### Lời nói
+
+> *"Trước khi đi vào từng bước, em xin đưa cho các bạn một tấm bản đồ, để lát
+> nữa em nói tới đâu các bạn biết mình đang đứng ở đâu.*
+>
+> *Kiến trúc trong Lab 5 chia code thành **ba tầng**.*
+>
+> *Trên cùng là **Presentation** — tầng giao diện. Gồm `HomePage` và
+> `PostProvider`. Tầng này chỉ làm hai việc: vẽ màn hình, và giữ trạng thái. Nó
+> **không hề biết** dữ liệu đến từ đâu.*
+>
+> *Ở giữa là **Domain** — em gọi là lõi của bài toán. Gồm `PostEntity` và
+> `IPostRepository`. Đây là tầng đặc biệt nhất: nó **không phụ thuộc vào bất cứ
+> thứ gì**. Các bạn mở hai file này ra sẽ thấy không có một dòng `import sqflite`
+> nào, thậm chí không `import flutter`. Nó chỉ mô tả: bài này có khái niệm 'Post',
+> và có một hợp đồng tên `IPostRepository`.*
+>
+> *Dưới cùng là **Data** — tầng biết chuyện bẩn. Gồm `PostModel`,
+> `PostRepositoryImpl`, `IPostDataSource` và `PostDataSourceImpl`. Chỉ tầng này
+> mới biết đang dùng SQLite, biết tên cột trong bảng, biết SQLite không có kiểu
+> boolean nên phải lưu 1 với 0.*
+>
+> *Còn cái khung nét đứt màu vàng ở dưới — **Core** — em xin nói rõ: nó **không
+> phải tầng thứ tư**. Nó là hạ tầng dùng chung: `DatabaseHelper` mở database, và
+> `injection.dart` là chỗ lắp ráp. Em tách riêng để khỏi nhét bừa vào tầng nào.*
+>
+> *Và bây giờ là chỗ quan trọng nhất của slide này. Các bạn nhìn hai cột mũi tên
+> hai bên — **chúng chỉ hai hướng ngược nhau, và đó không phải lỗi vẽ**.*
+>
+> *Mũi tên xanh bên trái là **chiều gọi**, tức là lúc chương trình chạy. Nó đi từ
+> trên xuống: giao diện gọi xuống Domain, Domain xuống Data, Data xuống SQLite.
+> Cái này thì ai cũng đoán được.*
+>
+> *Nhưng mũi tên đỏ bên phải là **chiều phụ thuộc**, tức là lúc biên dịch — code
+> nào phải biết tới code nào. Và các bạn thấy đấy: cả tầng trên lẫn tầng dưới
+> **đều chỉ vào Domain ở giữa**. Còn Domain thì **không chỉ ra ngoài bao giờ**.*
+>
+> *Nói cách khác: Presentation biết `IPostRepository`. Data cũng biết
+> `IPostRepository`. Nhưng `IPostRepository` thì không biết ai hết.*
+>
+> *Đó chính xác là lý do vì sao đổi database mà tầng giao diện không phải sửa.
+> Toàn bộ phần còn lại của bài em chỉ đang chứng minh câu vừa rồi thôi ạ."*
+
+### Chỉ vào đâu
+
+1. Chỉ lần lượt **ba ô** khi đọc tên ba tầng — chậm, mỗi ô một nhịp
+2. Khi nói "không import sqflite", **gõ nhẹ vào dòng chữ đỏ nhỏ** trong ô Domain
+3. Chỉ khung **nét đứt** khi nói "Core không phải tầng thứ tư"
+4. **Vuốt tay từ trên xuống dọc mũi tên xanh** khi nói "chiều gọi"
+5. **Dừng hẳn lại**, rồi chỉ hai mũi tên đỏ, đưa tay từ ngoài vào giữa **hai lần**
+   — một lần từ trên, một lần từ dưới — khi nói "đều chỉ vào Domain"
+
+> Động tác số 5 là động tác đáng giá nhất cả bài. Tập trước ở nhà.
+
+### Nếu bị hỏi
+
+**"Sao phải chia làm ba tầng cho phức tạp? Viết một file cũng chạy mà."**
+→ *"Dạ đúng là một file vẫn chạy. Chia tầng không làm app chạy nhanh hơn, nó làm
+**thay đổi** rẻ hơn. Bài này nhỏ nên chưa thấy rõ, nhưng đúng ba slide nữa em sẽ
+cho thấy đổi cả database mà chỉ sửa một dòng — đó là thứ một-file không làm
+được."*
+
+**"Hai mũi tên ngược nhau, rốt cuộc cái nào đúng?"**
+→ *"Dạ cả hai đều đúng, vì chúng nói hai chuyện khác nhau ạ. Xanh là **lúc chạy**
+— ai gọi ai. Đỏ là **lúc biên dịch** — ai phải import ai. Điều khiển thì đi
+xuống, nhưng phụ thuộc thì đi vào trong. Đảo ngược được như vậy là nhờ
+interface."*
+
+**"Core có phải là một tầng không?"**
+→ *"Dạ không ạ. Nó là hạ tầng dùng chung — `DatabaseHelper` và chỗ lắp ráp
+`injection.dart`. Em để nét đứt trên sơ đồ chính là để phân biệt với ba tầng
+thật."*
+
+**"Entity với Model khác gì nhau?"**
+→ *"Dạ hai slide nữa em sẽ nói kỹ. Nói ngắn: `PostEntity` là cách app hiểu dữ
+liệu, `PostModel` là cách database lưu dữ liệu. Ví dụ `isLike` — trong Entity là
+`true`/`false`, trong Model là `1`/`0`, vì SQLite không có kiểu boolean."*
+
+---
+---
+
+# Slide 6 — Flow 1: Tạo hợp đồng trước
+
+![Slide 6](assets/slides/slide-06.png)
 
 **Thời lượng:** ~100 giây
 **Ý chính:** viết ra **lời hứa** trước, chưa cần biết ai thực hiện.
@@ -199,9 +295,9 @@ ban chỉ cần việc được làm, không quan tâm là anh Nam hay anh Bình
 ---
 ---
 
-# Slide 6 — Flow 2: Thay ruột, tầng trên không đổi
+# Slide 7 — Flow 2: Thay ruột, tầng trên không đổi
 
-![Slide 6](assets/slides/slide-06.png)
+![Slide 7](assets/slides/slide-07.png)
 
 **Thời lượng:** ~100 giây
 **Ý chính:** thay dữ liệu giả bằng database thật, mà **tầng trên không sửa gì**.
@@ -245,9 +341,9 @@ một cải tiến — lát bạn Tuấn sẽ cho thấy."*
 ---
 ---
 
-# Slide 7 — Flow 3: PostModel làm người phiên dịch
+# Slide 8 — Flow 3: PostModel làm người phiên dịch
 
-![Slide 7](assets/slides/slide-07.png)
+![Slide 8](assets/slides/slide-08.png)
 
 **Thời lượng:** ~130 giây
 **Ý chính:** SQLite không có `true`/`false`, nên cần một lớp **phiên dịch** để
@@ -301,9 +397,9 @@ thì chỗ duy nhất phải sửa là `PostModel`."*
 ---
 ---
 
-# Slide 8 — Ai nối các mảnh?
+# Slide 9 — Ai nối các mảnh?
 
-![Slide 8](assets/slides/slide-08.png)
+![Slide 9](assets/slides/slide-09.png)
 
 **Thời lượng:** ~60 giây
 **Ý chính:** đặt ra vấn đề mới — tách rồi thì **ai ghép lại**?
@@ -336,9 +432,9 @@ mình vào class cụ thể đó rồi ạ. Lúc đó muốn đổi sang class k
 ---
 ---
 
-# Slide 9 — Flow 4: GetIt
+# Slide 10 — Flow 4: GetIt
 
-![Slide 9](assets/slides/slide-09.png)
+![Slide 10](assets/slides/slide-10.png)
 
 **Thời lượng:** ~100 giây
 **Ý chính:** GetIt là **phòng nhân sự** — nơi duy nhất biết ai ngồi vị trí nào.
@@ -391,9 +487,9 @@ biết."*
 ---
 ---
 
-# Slide 10 — Flow 5: Chuỗi phụ thuộc hoàn chỉnh
+# Slide 11 — Flow 5: Chuỗi phụ thuộc hoàn chỉnh
 
-![Slide 10](assets/slides/slide-10.png)
+![Slide 11](assets/slides/slide-11.png)
 
 **Thời lượng:** ~100 giây
 **Ý chính:** đây là **bức tranh hoàn chỉnh**. Hai mũi tên đỏ là điều duy nhất
@@ -452,9 +548,9 @@ Entity sạch cho tầng trên dùng."*
 ---
 ---
 
-# Slide 11 — Một dòng.
+# Slide 12 — Một dòng.
 
-![Slide 11](assets/slides/slide-11.png)
+![Slide 12](assets/slides/slide-12.png)
 
 **Thời lượng:** ~70 giây
 **Ý chính:** **trả câu hỏi đã gieo ở slide 4**. Đây là cao trào.
@@ -492,9 +588,9 @@ lời là một dòng" thì mất hết. Phải **dừng lại**, để lớp k�
 ---
 ---
 
-# Slide 12 — Bằng chứng
+# Slide 13 — Bằng chứng
 
-![Slide 12](assets/slides/slide-12.png)
+![Slide 13](assets/slides/slide-13.png)
 
 **Thời lượng:** ~60 giây
 **Ý chính:** **chứng minh** bằng ảnh thật, không nói suông.
@@ -540,10 +636,10 @@ lời là một dòng" thì mất hết. Phải **dừng lại**, để lớp k�
 
 # ⚠️ LỖI CẦN SỬA GẤP TRƯỚC KHI TRÌNH BÀY
 
-**Code trên slide 5, 6, 7, 8, 9 đang hiển thị SAI thứ tự.**
+**Code trên slide 6, 7, 8, 9, 10 đang hiển thị SAI thứ tự.**
 
 Dấu ngoặc nhọn đóng `}` bị đẩy lên đầu dòng, dấu chấm phẩy `;` bị đẩy ra trước,
-dấu ngoặc đơn bị đảo. Ví dụ slide 9 đang hiện:
+dấu ngoặc đơn bị đảo. Ví dụ slide 10 đang hiện:
 
 ```
 } ()void setDI
@@ -571,16 +667,16 @@ Thầy dạy lập trình sẽ **nhận ra ngay trong một giây**. Và câu h�
 |---|---|
 | **Tốt nhất** | Chụp màn hình đoạn code **từ VS Code** rồi chèn ảnh vào slide. Vừa đúng, vừa có tô màu cú pháp, nhìn chuyên nghiệp hơn hẳn |
 | Nhanh | Trong Canva, chọn khối code → đổi font sang font thường (không phải monospace) → gõ lại tay từng dòng |
-| Tạm được | Bỏ hẳn khối code, chỉ giữ sơ đồ. Slide 5, 6, 7 vẫn hiểu được nhờ sơ đồ |
+| Tạm được | Bỏ hẳn khối code, chỉ giữ sơ đồ. Slide 6, 7, 8 vẫn hiểu được nhờ sơ đồ |
 
 **Nhóm em nên chọn cách 1.** Code thật lấy từ:
 
 | Slide | File |
 |---|---|
-| 5 | `adfd05_architecture/lib/ex05/domain/repositories/i_post_repository.dart` |
-| 6 | `adfd05_architecture/lib/ex05/data/repositories/post_repository_impl.dart` |
-| 7 | `adfd05_architecture/lib/ex05/data/models/post_model.dart` |
-| 9 | `adfd05_architecture/lib/ex05/core/di/injection.dart` |
+| 6 | `adfd05_architecture/lib/ex05/domain/repositories/i_post_repository.dart` |
+| 7 | `adfd05_architecture/lib/ex05/data/repositories/post_repository_impl.dart` |
+| 8 | `adfd05_architecture/lib/ex05/data/models/post_model.dart` |
+| 10 | `adfd05_architecture/lib/ex05/core/di/injection.dart` |
 
 ---
 
@@ -590,7 +686,8 @@ Thầy dạy lập trình sẽ **nhận ra ngay trong một giây**. Và câu h�
    phải quen với câu chữ.
 2. **Lần hai, che phần lời nói đi**, chỉ nhìn slide và ý chính, tự nói lại bằng
    lời của mình. Không cần giống hệt.
-3. **Bấm giờ.** Mục tiêu khoảng 13 phút cho 12 slide.
+3. **Bấm giờ.** Cộng dồn 13 slide là 16 phút 30 — nếu vượt 18 phút thì cắt bớt
+   phần "Nếu bị hỏi", đừng cắt mạch chính.
 4. **Nhờ người khác hỏi vặn** — dùng phần "Nếu bị hỏi" ở mỗi slide.
 
 > **Điều quan trọng nhất:** đừng học thuộc từng chữ. Học thuộc **ý chính của mỗi
