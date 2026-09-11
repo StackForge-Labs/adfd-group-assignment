@@ -26,7 +26,9 @@ adfd-group-assignment/
 │   ├── luong-chay-chuong-trinh.md  bấm Run xong máy làm gì
 │   ├── cau-truc-du-an.md           cấu trúc thư mục và lý do đằng sau
 │   ├── phan-cong-task.md           chia việc 4 người + kịch bản trình bày
-│   └── lenh-hay-dung.md            tra cứu lệnh Flutter / Maven / Docker
+│   ├── lenh-hay-dung.md            tra cứu lệnh Flutter / Maven / Docker
+│   ├── slide-thuyet-trinh.md       nội dung 39 slide + kịch bản nói
+│   └── assets/                     ảnh chụp màn hình dùng cho slide
 ├── adfd05_architecture/            Flutter — Lab 5, 5 flow
 └── adfd06_rest_api/
     ├── adfd06_backend/             Spring Boot 4.1.1 + MySQL, port 8082
