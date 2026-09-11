@@ -653,16 +653,50 @@ cần nhớ.
 3. **Dừng hẳn lại ở hai mũi tên đỏ**, chỉ vào từng cái một
 
 ### Nếu bị hỏi
-**"Sao cần tới hai hợp đồng, một cái không đủ à?"**
-→ *"Với bài này thì đúng là một cái cũng chạy được ạ. Giá trị thật lộ ra khi app
-có nhiều nguồn dữ liệu — ví dụ vừa có SQLite vừa có API. Lúc đó Repository là
-chỗ quyết định lấy nguồn nào, mất mạng thì dùng cache. Còn Data Source thì mỗi
-cái chỉ biết đúng nguồn của nó."*
 
-**"Data Source khác Repository chỗ nào?"**
-→ *"Data Source biết **lấy dữ liệu ở đâu và bằng cách nào** — nó biết SQL, biết
-tên cột. Repository biết **app cần gì** — nó nhận dữ liệu thô rồi dịch sang
-Entity sạch cho tầng trên dùng."*
+> Ba câu dưới đây **gần như chắc chắn sẽ bị hỏi**, vì Data Source là khái niệm
+> mới toanh, bốn flow trước không hề có. Học thuộc ba câu trả lời này.
+
+**"Data Source là gì?"**
+→ *"Dạ, Data Source là **thứ trực tiếp đụng vào nơi chứa dữ liệu**. Trong bài
+này `PostDataSourceImpl` là cái duy nhất viết câu lệnh SQL, biết bảng tên
+`posts`, biết cột tên `is_like`. Nó lấy dữ liệu thô lên rồi đưa cho Repository,
+chứ không dịch gì cả."*
+
+**"Sao lại đẻ thêm `IPostDataSource` và `PostDataSourceImpl`? Repository làm luôn
+như Flow 4 không được à?"**
+→ *"Dạ được ạ, Flow 4 vẫn chạy bình thường. Nhưng ở Flow 4,
+`PostRepositoryImpl` đang ôm **hai việc**: vừa chạy SQL lấy dữ liệu, vừa dịch dữ
+liệu sang Entity. Hai việc đó thay đổi vì hai lý do khác nhau — đổi database thì
+phải sửa nó, mà đổi cách app hiểu dữ liệu cũng phải sửa nó.*
+>
+> *Flow 5 tách đôi ra: `PostDataSourceImpl` chỉ lấy, `PostRepositoryImpl` chỉ
+> dịch. Mỗi bên còn đúng một lý do để sửa."*
+
+**"Nhưng tách ra thì được lợi gì cụ thể?"** — *(câu này mới là câu đáng giá)*
+→ *"Dạ, được đúng một thứ: sau khi tách, **`PostRepositoryImpl` không còn biết
+SQLite tồn tại nữa**. Mở file ra sẽ thấy nó không import `DatabaseHelper` nữa.*
+>
+> *Và đó chính là thứ làm cho cú đổi một dòng ở slide sau chạy được. Nếu giữ
+> nguyên như Flow 4, em đổi công tắc đó thì app **sẽ không chạy** — vì
+> `PostRepositoryImpl` dính chặt vào `DatabaseHelper`, muốn đổi nguồn là phải sửa
+> chính nó. Nói cách khác, Flow 5 chính là thứ mua về câu trả lời 'một dòng'."*
+
+> **Mẹo:** nếu bí, quay về một câu duy nhất —
+> ***Data Source biết lấy ở đâu. Repository biết dịch thành gì.***
+> Rồi thêm ví dụ kho hàng: Data Source là nhân viên kho bê hàng lên, Repository
+> là nhân viên đóng gói lại cho phòng ban dùng.
+
+**"Sao cần tới hai hợp đồng, một cái không đủ à?"**
+→ *"Với bài nhỏ này thì một cái cũng chạy được ạ. Giá trị thật lộ ra khi app có
+nhiều nguồn dữ liệu — vừa SQLite vừa API. Lúc đó Repository là chỗ quyết định
+lấy nguồn nào, mất mạng thì dùng cache. Còn mỗi Data Source chỉ biết đúng nguồn
+của nó."*
+
+> ⚠️ **Đọc đúng tên class.** Là `PostDataSourceImpl`, **không** phải
+> `IPostDataSourceImpl`. Chữ `I` chỉ đứng trước hợp đồng (`IPostDataSource`),
+> không bao giờ đứng trước class làm việc thật. Đọc sai tên là thầy biết ngay
+> mình chưa mở file ra xem.
 
 ---
 ---
