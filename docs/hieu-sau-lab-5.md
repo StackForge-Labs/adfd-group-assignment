@@ -649,6 +649,122 @@ là phải tự viết đống `new` ở đâu đó.
 **Phép thử để biết tách đúng chưa:** nếu đổi database mà `PostEntity` phải sửa
 → tách sai. Nếu chỉ `PostModel` sửa → tách đúng.
 
+## 5.5 · Data Source khác Repository chỗ nào
+
+Đây là câu hỏi hay bị hỏi nhất, vì hai cái nhìn qua rất giống nhau — cùng có một
+interface và một implementation, cùng ba phương thức gần trùng tên.
+
+### Data Source — biết LẤY Ở ĐÂU
+
+Là nơi **duy nhất** biết cách nói chuyện với **một** kho dữ liệu cụ thể. Nó biết
+những thứ rất kỹ thuật thấp:
+
+- bảng tên `posts`
+- cột tên `is_like` chứ không phải `isLike`
+- cú pháp `LIKE ?` của SQL
+- `order by id asc`
+
+Và nó trả về **dữ liệu thô** — đúng hình dạng database nhả ra, chưa chế biến.
+
+### Repository — biết APP CẦN GÌ
+
+Nhận dữ liệu thô từ Data Source rồi **phiên dịch** thành thứ app dùng được.
+Không biết SQL, không biết tên cột nào ngoài lúc mapping.
+
+### Bảng đối chiếu
+
+| | **Data Source** | **Repository** |
+|---|---|---|
+| Trả lời câu hỏi | *Lấy từ chỗ này **bằng cách nào**?* | *App **cần gì**?* |
+| Biết SQL / HTTP | ✅ | ❌ |
+| Trả về | `Map` thô | `PostEntity` sạch |
+| Số lượng | **Nhiều** — mỗi nguồn một cái | **Một** cho mỗi loại dữ liệu |
+
+> **Một câu để nhớ:**
+> **Data Source biết *lấy ở đâu*. Repository biết *app cần gì*.**
+
+### Vì sao cần CẢ HAI? Repository không đủ à?
+
+Trả lời thật thà: **với Lab 5 chỉ có một nguồn SQLite thì đúng là hơi thừa.**
+
+Giá trị thật lộ ra khi có **nhiều nguồn**:
+
+```
+              PostRepositoryImpl
+                  ↓         ↓
+   IPostLocalDataSource   IPostRemoteDataSource
+        (SQLite)                (REST API)
+```
+
+Lúc đó Repository làm việc mà **không Data Source nào làm được**:
+
+```dart
+Future<List<PostEntity>> getPosts() async {
+  try {
+    final remote = await remoteDataSource.getPosts();    // thử mạng trước
+    await localDataSource.cache(remote);                 // lưu lại
+    return remote.map(...).toList();
+  } catch (e) {
+    return localDataSource.getPosts().map(...).toList(); // mất mạng → cache
+  }
+}
+```
+
+**Đó mới là lý do tồn tại của Repository: điều phối nhiều nguồn và quyết định
+chiến lược.** Mỗi Data Source chỉ biết nguồn của nó, không biết có nguồn nào
+khác tồn tại.
+
+Lab 5 dựng sẵn hai tầng để khi thêm nguồn thứ hai thì **không phải đập đi xây
+lại**.
+
+### So sánh với Entity Framework của .NET
+
+Nếu bạn từng làm .NET, đây là chỗ **rất dễ nhầm**.
+
+> **EF KHÔNG tương đương Data Source. EF nằm ở tầng thấp hơn hẳn.**
+
+| Flutter / Lab 5 | .NET |
+|---|---|
+| `sqflite` *(package)* | **Entity Framework** ← đây |
+| `DatabaseHelper` | `DbContext` |
+| `PostDataSourceImpl` | Class bọc quanh `DbContext` — thường gọi là **DAO** |
+| `IPostRepository` + `PostRepositoryImpl` | `IPostRepository` + `PostRepository` — .NET cũng có pattern này |
+| `PostModel` | Entity class của EF *(ánh xạ với bảng)* |
+| `PostEntity` | Domain model / POCO ở tầng domain |
+
+**Khác biệt lớn nhất: `sqflite` KHÔNG phải ORM.**
+
+| | Entity Framework | sqflite |
+|---|---|---|
+| Loại | **ORM** — ánh xạ object ↔ bảng | **Driver** — gửi SQL, nhận kết quả |
+| Trả về | Object C# có kiểu sẵn | `Map<String, dynamic>` thô |
+| Mapping | **Tự động** | **Viết tay** — `PostModel.toEntity()` |
+| Query | LINQ, kiểm tra kiểu lúc biên dịch | Chuỗi SQL |
+| Migration | `dotnet ef migrations` | Tự viết trong `onCreate` |
+| Change tracking | Có | Không |
+
+Đây chính là lý do Lab 5 **phải viết tay** `PostModel.toEntity()`. Với EF thì
+bước đó EF làm hộ — `context.Posts.ToList()` là ra object luôn.
+
+> Dart cũng có ORM thật là **drift** và **floor**, chúng mới gần EF. Thầy chọn
+> `sqflite` để người học **thấy được** bước mapping thay vì để thư viện giấu đi.
+
+### Một điểm tương đồng đáng nói khi thuyết trình
+
+Trong giới .NET có cuộc tranh luận kinh điển:
+
+> *"Đã có EF rồi thì viết Repository lên trên có thừa không? `DbSet<T>` bản thân
+> nó đã là Repository, `DbContext` đã là Unit of Work rồi."*
+
+**Đó chính xác là cùng một câu hỏi với "đã có Repository rồi thì Data Source có
+thừa không?"**
+
+Và cùng một câu trả lời: **thừa nếu chỉ có một nguồn, đáng giá khi có nhiều nguồn
+hoặc cần thay nguồn.**
+
+Nói được sự tương đồng này cho thấy bạn hiểu bản chất pattern, không phải học
+thuộc tên gọi.
+
 ---
 
 # Phần 6 — Chi tiết tinh vi, để trả lời câu hỏi khó
@@ -788,6 +904,9 @@ Trả lời trôi chảy **không nhìn tài liệu** thì mới thật sự n�
 | 13 | Bấm like xong mà ghi database lỗi thì sao? | 6.2 |
 | 14 | Gõ search 7 ký tự thì gọi database mấy lần? | 6.4 |
 | 15 | `onCreate` chạy mấy lần? | 3.7 |
+| 16 | Data Source khác Repository chỗ nào? | 5.5 |
+| 17 | Chỉ có một nguồn SQLite, vậy Data Source có thừa không? | 5.5 |
+| 18 | Entity Framework của .NET tương đương cái gì trong Lab 5? | 5.5 |
 
 ## Cách luyện
 
