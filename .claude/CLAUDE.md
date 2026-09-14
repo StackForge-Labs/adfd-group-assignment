@@ -1,16 +1,16 @@
-# ADFD — Lab 5 & Lab 6 (Team E)
+# ADFD — Lab 5 & Lab 6 (Team 1)
 
 ## What this repo is
 
 A **university group assignment** for a Flutter course, not a production app.
-Team E owns two labs out of six; the other four belong to other teams.
+Team 1 owns two labs out of six; the other four belong to other teams.
 
 | Lab | Topic | Stack |
 |---|---|---|
 | **Lab 5** — `adfd05_architecture/` | Clean Architecture on the client | Flutter + SQLite |
 | **Lab 6** — `adfd06_rest_api/` | Full-stack REST | Spring Boot + MySQL + Flutter |
 
-Team E: **Mai Trung Hậu** · **Phạm Hoàng Tuấn** (leader) · **Lê Minh Trí** ·
+Team 1: **Mai Trung Hậu** · **Phạm Hoàng Tuấn** (leader) · **Lê Minh Trí** ·
 **Lâm Hoàng An**. The repo owner is Hậu.
 
 The deliverable was a **presentation**, so readability and explainability matter

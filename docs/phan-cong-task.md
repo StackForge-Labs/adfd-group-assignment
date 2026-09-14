@@ -1,4 +1,4 @@
-# Phân công task — Lab 5 & Lab 6 (Team E)
+# Phân công task — Lab 5 & Lab 6 (Team 1)
 
 Nhóm 4 người, mỗi lab 2 người, **mỗi người trình bày một phần riêng** (không
 phải hai người nói chung một phần).
