@@ -16,12 +16,24 @@
   //
   // Project Java thật duy nhất trong repo là backend Maven ở
   // adfd06_rest_api/adfd06_backend — vẫn được import bình thường.
+  // Chỉ java.import.exclusions là KHÔNG đủ: bộ import Gradle (Buildship) nằm
+  // bên trong extension Java tự dò build theo đường riêng và vẫn nạp hai thư
+  // mục android/ đó. Cách chắc chắn là tắt hẳn việc import Gradle.
+  //
+  // An toàn, vì project Java duy nhất của repo — backend ở
+  // adfd06_rest_api/adfd06_backend — dùng Maven, không dùng Gradle. Import
+  // Maven vẫn bật nên backend không bị ảnh hưởng.
+  "java.import.gradle.enabled": false,
+
   "java.import.exclusions": [
     "**/node_modules/**",
     "**/.metadata/**",
     "**/archetype-resources/**",
     "**/META-INF/maven/**",
-    "**/android/**"
+    "**/android/**",
+    // reference/lab-6 chứa BẢN SAO pom.xml của thầy. Nếu để extension nạp,
+    // sẽ có hai Maven project trùng artifactId trong cùng workspace.
+    "reference/**"
   ],
 
   // Tài liệu gốc của thầy: file .dart trần, không thuộc package nào.
