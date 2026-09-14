@@ -1,0 +1,42 @@
+{
+  // ── Vì sao có file này ──────────────────────────────────────────────
+  // Extension Java của VS Code quét cả workspace và tự import MỌI build
+  // Gradle nó tìm thấy. Repo này có hai thư mục android/ do Flutter sinh ra:
+  //
+  //   adfd05_architecture/android
+  //   adfd06_rest_api/adfd06_frontend/android
+  //
+  // Cả hai đều không khai báo rootProject.name, nên Gradle lấy mặc định là
+  // tên thư mục — cùng là "android". Hai root project trùng tên trong một
+  // workspace sinh ra lỗi "A project with the name android already exists".
+  //
+  // Hai thư mục đó là vỏ Android của Flutter, KHÔNG phải project Java mà
+  // nhóm phát triển. `flutter run` tự gọi Gradle, không đi qua extension này.
+  // Nên cách đúng là bảo extension đừng đụng vào chúng.
+  //
+  // Project Java thật duy nhất trong repo là backend Maven ở
+  // adfd06_rest_api/adfd06_backend — vẫn được import bình thường.
+  "java.import.exclusions": [
+    "**/node_modules/**",
+    "**/.metadata/**",
+    "**/archetype-resources/**",
+    "**/META-INF/maven/**",
+    "**/android/**"
+  ],
+
+  // Tài liệu gốc của thầy: file .dart trần, không thuộc package nào.
+  // Ẩn khỏi ô tìm kiếm để khỏi lẫn với code của nhóm. Vẫn mở đọc được.
+  "search.exclude": {
+    "reference/**": true,
+    "node_modules/**": true,
+    "**/build/**": true,
+    "**/.dart_tool/**": true
+  },
+
+  "dart.lineLength": 80,
+  "editor.formatOnSave": true,
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.rulers": [80]
+  }
+}
