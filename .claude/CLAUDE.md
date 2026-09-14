@@ -3,27 +3,67 @@
 ## What this repo is
 
 A **university group assignment** for a Flutter course, not a production app.
-Team E owns two labs out of six; the other four belong to other teams and are
-not in this repo.
+Team E owns two labs out of six; the other four belong to other teams.
 
 | Lab | Topic | Stack |
 |---|---|---|
 | **Lab 5** — `adfd05_architecture/` | Clean Architecture on the client | Flutter + SQLite |
 | **Lab 6** — `adfd06_rest_api/` | Full-stack REST | Spring Boot + MySQL + Flutter |
 
-The deliverable is a **presentation**, so readability and explainability matter
+Team E: **Mai Trung Hậu** · **Phạm Hoàng Tuấn** (leader) · **Lê Minh Trí** ·
+**Lâm Hoàng An**. The repo owner is Hậu.
+
+The deliverable was a **presentation**, so readability and explainability matter
 more than cleverness. Every design decision must be defensible out loud to a
 lecturer.
 
-**Read `docs/` before answering questions about this project.** Those four files
-carry the reasoning behind everything here:
+---
+
+## Current state — presentation DELIVERED
+
+The presentation was built and given. Both demo apps run end to end, verified on
+an Android emulator against a live MySQL.
+
+**What that means for you:** the code and the slide material are a matched pair.
+Changing a class name, a folder, or an improvement number can silently
+invalidate a document, a diagram, or a spoken script. Before renaming or moving
+anything, grep `docs/` for the old name.
+
+Work now falls into two buckets:
+
+1. **Maintenance and Q&A** — explaining the code, fixing small defects,
+   preparing answers to lecturer questions.
+2. **Continued improvement** — refactors and features are welcome, subject to
+   the constraints below.
+
+---
+
+## Read these before answering questions
+
+`docs/` is the reasoning behind everything here. It is written in Vietnamese and
+is **more authoritative than your own reading of the code** on questions of
+*why*.
 
 | File | What it answers |
 |---|---|
 | `docs/tong-quan-lab-5-6.md` | What the two labs do, big picture |
-| `docs/luong-chay-chuong-trinh.md` | Runtime flow from `main()` to screen |
 | `docs/cau-truc-du-an.md` | Folder layout and **why** |
-| `docs/phan-cong-task.md` | Who presents what |
+| `docs/luong-chay-chuong-trinh.md` | Runtime flow from `main()` to screen |
+| `docs/hieu-sau-lab-5.md` | **Deep dive on Lab 5** — 7 parts, 18 self-check questions |
+| `docs/kich-ban-thuyet-trinh-lab-5.md` | Spoken script, slides 1–13, with images |
+| `docs/lenh-hay-dung.md` | Command reference and troubleshooting |
+| `docs/phan-cong-task.md` | Who presented what |
+| `docs/slide-thuyet-trinh-v2.md` | Slide content, 25 slides — **the version in use** |
+| `docs/slide-noi-dung-thuan.md` | Screen text only, input for Canva |
+| `docs/slide-thuyet-trinh.md` | v1, 39 slides — superseded, kept for reference |
+
+`reference/` holds the **lecturer's original material** for all six labs — the
+PDF brief and his untouched source. When a question is "does this match what the
+lecturer asked for?", that folder is the answer, not memory.
+
+`docs/assets/` holds 8 hand-drawn SVG diagrams (`so-do-1..8`), app screenshots,
+per-slide PNGs used by the script (`slides/`), and the full exported deck
+(`slides-export/`).
 
 ---
 
@@ -31,9 +71,10 @@ carry the reasoning behind everything here:
 
 ```
 adfd-group-assignment/
-├── docker-compose.yml            MySQL 8 + phpMyAdmin
+├── docker-compose.yml            MySQL 8 + phpMyAdmin (see caveat below)
 ├── db/init.sql                   schema + 5 seed rows
-├── docs/                         team documentation (Vietnamese)
+├── docs/                         team documentation + slides (Vietnamese)
+├── reference/lab-1 … lab-6/      lecturer's original briefs and source
 ├── adfd05_architecture/          Flutter — Lab 5, 5 flows
 └── adfd06_rest_api/
     ├── adfd06_backend/           Spring Boot 4.1.1, port 8082
@@ -63,8 +104,8 @@ lib/
 
 This looks wrong by normal Flutter standards, and it is — for a normal app. Here
 it is **deliberate**: it lets the team demo the progression step by step. Do not
-propose flattening it, merging flows, or renaming `exNN`. The assignment brief
-lists these exact paths.
+propose flattening it, merging flows, or renaming `exNN`. The brief lists these
+exact paths.
 
 > "Flow" here has nothing to do with Flutter's `Flow` widget or the FlutterFlow
 > product. Do not conflate them.
@@ -89,8 +130,7 @@ Page (UI)  →  Provider  →  I<X>Repository        ← domain: contract only
         Lab 6: ApiClient      → HTTP → Spring Boot → MySQL
 ```
 
-Wired together with **GetIt**. Each lab has its own copy at
-`<flutter-project>/lib/<final-flow>/core/di/injection.dart`.
+Wired with **GetIt** at `<flutter-project>/lib/<final-flow>/core/di/injection.dart`.
 
 **Rules that hold in both labs:**
 
@@ -100,52 +140,89 @@ Wired together with **GetIt**. Each lab has its own copy at
 - **Repository is the only place that knows both `Model` and `Entity`**
 - Data sources speak raw `Map<String, dynamic>`, never `Entity`
 
+**The division that gets asked about most:** a Data Source knows *where to fetch
+from* — SQL, table names, column names. A Repository knows *what to translate it
+into* — raw rows to `Entity`. Splitting them is what lets
+`PostRepositoryImpl` stop importing `DatabaseHelper`, which in turn is what makes
+the one-line source swap possible. That swap is the climax of the presentation.
+
 Earlier flows (`ex01/`–`ex04/` in Lab 5, `ex01/`–`ex03/` in Lab 6) deliberately
 have **less** structure — they are the teaching progression. Leave them alone.
 
 ---
 
+## The one-line switch
+
+`adfd05_architecture/lib/ex05/core/di/injection.dart`:
+
+```dart
+const bool useInMemoryDataSource = false;   // true → InMemoryPostDataSource
+```
+
+Flipping this swaps SQLite for an in-memory list, and **no other file changes**.
+It is the single most important artefact in the repo — the whole Lab 5 argument
+rests on it. Do not delete `InMemoryPostDataSource`, and do not leave the flag on
+`true` in a commit.
+
+After flipping it, press **`R`** (hot restart), not `r` — hot reload does not
+re-run `main()`, so GetIt keeps the old registration and it looks like the change
+did nothing.
+
+---
+
 ## Running things
 
-**Lab 5** needs nothing but Flutter:
+**Lab 5** needs nothing but Flutter — no Docker, no backend:
 
 ```bash
-cd adfd05_architecture && flutter pub get && flutter run -d <device>
+cd adfd05_architecture && flutter pub get && flutter run -d emulator-5554
 ```
 
-**Lab 6** needs three processes alive at once:
+**Lab 6** needs three processes alive, in this order:
 
 ```bash
-docker compose up -d                                   # 1. MySQL
+# 1. MySQL — see caveat
+docker exec mysql-container mysql -uroot -p112233 \
+  -e "SELECT COUNT(*) FROM adfddb.contacts;"        # must return 5
+
+# 2. backend, port 8082
 cd adfd06_rest_api/adfd06_backend
-mvn clean package -DskipTests
-java -jar target/adfd06_rest_api-0.0.1-SNAPSHOT.jar    # 2. backend, port 8082
-cd ../adfd06_frontend && flutter run -d <device>       # 3. Flutter
+java -jar target/adfd06_rest_api-0.0.1-SNAPSHOT.jar
+
+# 3. Flutter
+cd adfd06_rest_api/adfd06_frontend && flutter run -d emulator-5554
 ```
+
+> **MySQL caveat.** The owner's machine already runs a container named
+> `mysql-container` on port 3306. `docker-compose.yml` would start a *second*
+> one named `adfd_mysql` on the same port and fail. The compose file is for
+> teammates who have no MySQL. Check `docker ps` before running it.
 
 Verify the backend before blaming the app:
 
 ```bash
-curl http://localhost:8082/api/contacts     # must return 5 contacts
+curl http://localhost:8082/api/contacts
 ```
+
+Re-build the jar only after changing Java code: `mvn clean package -DskipTests`.
 
 ---
 
-## Deliberate deviations from the assignment brief
+## Deliberate deviations from the brief
 
-Do not "correct" these back — each was a decision, and each is defended in
+Do not "correct" these back — each was a decision, defended in
 `docs/cau-truc-du-an.md` and `README.md`.
 
 | Item | Brief says | This repo does | Why |
 |---|---|---|---|
-| Database | SQL Server | **MySQL** | Lecturer allowed free choice; MySQL runs natively on Apple Silicon |
+| Database | SQL Server | **MySQL** | Lecturer allowed free choice; runs natively on Apple Silicon |
 | Lab 6 folders | `models/ pages/ providers/ services/` | Clean Architecture layers | Applies the lesson from Lab 3 and Lab 5 |
-| `artifactId` | brief text says `adfd06_backend` | `adfd06_rest_api` | The lecturer's own **code** says this; his doc and code disagree |
-| Lab 5 folders | — | **left exactly as given** | Already Clean Architecture; adding `features/` to a one-feature app buys nothing |
+| `artifactId` | doc says `adfd06_backend` | `adfd06_rest_api` | The lecturer's own **code** says this; his doc and code disagree |
+| Lab 5 folders | — | **left exactly as given** | Already Clean Architecture; `features/` in a one-feature app buys nothing |
 
-The team also fixed five real defects in the provided code. They are numbered
-1–5 in `README.md` under *"Cải tiến của nhóm"* and each is referenced by number
-during the presentation — **keep that numbering stable.**
+The team also fixed five real defects in the provided code, numbered 1–5 in
+`README.md` under *"Cải tiến của nhóm"*. Each is referenced **by number** in the
+slides and the script — **keep that numbering stable.**
 
 ---
 
@@ -165,9 +242,11 @@ during the presentation — **keep that numbering stable.**
 - Comments explain **why**, never **what**
 - Each Dart file in the final flows ends with a `/* FLOW ... */` block drawing
   its place in the chain. This is the lecturer's house style — **keep it**, and
-  add one when you create a new file there.
+  add one when creating a new file there.
 - Java: standard Spring layering, Lombok for boilerplate
-- Run `flutter analyze` from inside each Flutter project; both must be clean
+- Run `flutter analyze` inside each Flutter project; both must be clean
+- The `I` prefix marks a **contract only** — `IPostDataSource` is the interface,
+  `PostDataSourceImpl` is the implementation. There is no `IPostDataSourceImpl`.
 
 ---
 
@@ -178,38 +257,52 @@ Enforced by `.husky/commit-msg` — it rejects anything else.
 - `type(scope): subject` — **one line**, **≤ 70 characters**, **no body, no footer**
 - Types: `feat fix docs style refactor perf test chore revert ci`
 - **Never add a `Co-Authored-By` trailer** — the hook reads it as a body
-- Scopes in use: `repo` · `db` · `backend` · `lab5` · `lab6` · `readme`
+- Scopes in use: `repo` `lab5` `lab6` `backend` `db` `di` `post` `script`
+  `slides` `assets` `reference` `readme` `husky`
 
 One commit = one concern. Do not sweep unrelated files in with `git add -A`
-without checking what it staged first.
+without checking what it staged.
+
+`.husky/pre-commit` formats staged Dart files, re-stages them, then runs
+`flutter analyze --no-fatal-infos`. Info lints pass; warnings and errors block.
+
+**Git identity comes from the global config** (`maaitlunghau`). Never set a
+repo-local `user.email`. History was rewritten once to fix exactly that.
 
 ---
 
 ## What Claude must NOT do
 
-- Do not flatten or rename the `exNN/` structure (see above)
+- Do not flatten or rename the `exNN/` structure
 - Do not restructure `ex01/`–`ex04/` of Lab 5 — they are the teaching progression
+- Do not delete `InMemoryPostDataSource` or commit the switch set to `true`
 - Do not switch the database back to SQL Server
 - Do not renumber the five improvements in `README.md`
-- Do not add tests — the assignment does not ask for them, and no test
-  infrastructure exists here
+- Do not rename classes or move files without grepping `docs/` first — the slide
+  material names them explicitly
+- Do not add tests — the assignment does not ask for them and no test
+  infrastructure exists
 - Do not bump dependency versions unprompted; the demo must stay reproducible
 - Do not commit `node_modules/`, `.codegraph/codegraph.db`, or `target/`
 - Do not run `git push --force` — the repo is shared with three teammates
+- Do not edit `reference/` — it is the lecturer's material, kept verbatim
 
 ---
 
 ## Known traps, already paid for
 
-These cost real debugging time. `README.md` has the full write-up.
-
-| Symptom | Cause |
+| Symptom | Cause and fix |
 |---|---|
-| Spinner spins forever, `Network is unreachable` | Emulator has **airplane mode on** by default → `adb shell cmd connectivity airplane-mode disable` |
-| `flutter doctor` says `✗ Android license status unknown` | **False alarm.** New `cmdline-tools` dropped `--licenses`. Verify by building an APK instead. |
-| `flutter emulators --create` claims no system image | Same root cause. Create the AVD from Android Studio's GUI. |
-| Vietnamese names turn into `?` | Database must be `utf8mb4` **and** the connection string needs `characterEncoding=UTF-8` |
-| `10.0.2.2` refused on a real phone | That address only exists for the Android emulator. Real device → LAN IP. iOS simulator → `localhost`. |
+| Host keyboard does not type into the emulator | AVD was made with `avdmanager`, which defaults to `hw.keyboard=no`. Shut the emulator down **first**, set `hw.keyboard=yes` in `~/.android/avd/<name>.avd/config.ini`, restart. Editing while it runs is overwritten on exit. |
+| `adb: command not found` | Not on PATH. Use `~/Library/Android/sdk/platform-tools/adb` |
+| Spinner forever, `Network is unreachable` | Emulator boots with **airplane mode on** → `adb shell cmd connectivity airplane-mode disable` |
+| `Port 8082 was already in use` | An orphaned backend (`PPID 1`) from an earlier session. `lsof -nP -iTCP:8082 -sTCP:LISTEN` then `kill`. Do not change the port. |
+| `flutter doctor` says `✗ Android license status unknown` | **False alarm.** New `cmdline-tools` dropped `--licenses`. Verify by building an APK. |
+| `flutter emulators --create` claims no system image | Same root cause. Use `avdmanager create avd` — but then see the keyboard trap above. |
+| Vietnamese names become `?` | DB must be `utf8mb4` **and** the connection string needs `characterEncoding=UTF-8` |
+| `10.0.2.2` refused on a real phone | That address exists only for the Android emulator. Real device → LAN IP. iOS simulator → `localhost`. |
+| Search breaks on `A&B`, `C#1`, `a+b` | Build URLs with `Uri.http(...)`, never string concatenation. Spaces and Vietnamese diacritics are fine — that part was a false alarm. |
+| Changing the DI switch appears to do nothing | You pressed `r`. Press `R`. |
 
 <!-- CODEGRAPH_START -->
 ## CodeGraph
