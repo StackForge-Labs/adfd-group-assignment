@@ -1,0 +1,19 @@
+# Cấu hình analyzer ở mức repo.
+#
+# Repo này KHÔNG phải một Dart package — nó chứa hai project Flutter độc lập,
+# mỗi project tự chạy `flutter analyze` bên trong thư mục của nó.
+#
+# File này chỉ có một nhiệm vụ: chặn analyzer đụng vào những thư mục không phải
+# source code của nhóm, phòng khi ai đó chạy `dart analyze` / `flutter analyze`
+# từ thư mục gốc.
+analyzer:
+  exclude:
+    # Tài liệu gốc của thầy — file .dart trần, KHÔNG thuộc package nào, nên mọi
+    # `import 'package:flutter/...'` đều không resolve được. Đây là bản lưu trữ
+    # để đối chiếu đề bài, không phải code chạy được. Đừng sửa, đừng phân tích.
+    - reference/**
+
+    # Thư mục do công cụ sinh ra.
+    - "**/build/**"
+    - "**/.dart_tool/**"
+    - node_modules/**
