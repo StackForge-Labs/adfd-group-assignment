@@ -71,6 +71,7 @@ per-slide PNGs used by the script (`slides/`), and the full exported deck
 
 ```
 adfd-group-assignment/
+├── analysis_options.yaml         excludes reference/ from the analyzer
 ├── docker-compose.yml            MySQL 8 + phpMyAdmin (see caveat below)
 ├── db/init.sql                   schema + 5 seed rows
 ├── docs/                         team documentation + slides (Vietnamese)
@@ -245,6 +246,10 @@ slides and the script — **keep that numbering stable.**
   add one when creating a new file there.
 - Java: standard Spring layering, Lombok for boilerplate
 - Run `flutter analyze` inside each Flutter project; both must be clean
+- The root `analysis_options.yaml` exists **only** to exclude `reference/` and
+  generated folders. `reference/` holds bare `.dart` files that belong to no
+  package, so analysing them yields thousands of phantom errors. Keep that
+  exclude; do not add lint rules there — per-project config is what governs.
 - The `I` prefix marks a **contract only** — `IPostDataSource` is the interface,
   `PostDataSourceImpl` is the implementation. There is no `IPostDataSourceImpl`.
 
@@ -263,8 +268,9 @@ Enforced by `.husky/commit-msg` — it rejects anything else.
 One commit = one concern. Do not sweep unrelated files in with `git add -A`
 without checking what it staged.
 
-`.husky/pre-commit` formats staged Dart files, re-stages them, then runs
-`flutter analyze --no-fatal-infos`. Info lints pass; warnings and errors block.
+`.husky/pre-commit` is a **no-op stub** — it prints a line and exits. Only
+`commit-msg` actually enforces anything. Do not assume formatting or analysis
+happened automatically; run them yourself.
 
 **Git identity comes from the global config** (`maaitlunghau`). Never set a
 repo-local `user.email`. History was rewritten once to fix exactly that.
